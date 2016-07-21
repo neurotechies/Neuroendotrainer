@@ -1,0 +1,28 @@
+%YAML:1.0
+
+# Global Settings 
+CapturePath: "/home/nets/Desktop"
+
+
+# chhose the auxillary camera for basler - "basler" , for ids - "ids"
+choose_Aux: "basler"
+size_Queue: 10
+size_Bin: 20
+
+# seetings for basler camera
+countOfImagesToGrab: 180000
+rows_Basler: 1024
+cols_Basler: 1280
+frame_rate_basler: 25
+max_num_buffer_basler: 25
+
+# settings for IDS camera
+camID_ids: 2
+rows_ids: 1024
+cols_ids: 1280
+
+# settings for endoscopic camera
+rows_Endo: 720
+cols_Endo: 1280
+frame_rate_endo: 25
+device_name_endo: "/dev/video0"

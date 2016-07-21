@@ -1,0 +1,889 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>settings_main</class>
+ <widget class="QDialog" name="settings_main">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>920</width>
+    <height>662</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="toolTipDuration">
+   <number>1</number>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgba(11, 11, 30, 147);</string>
+  </property>
+  <widget class="QLabel" name="label_status">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>620</y>
+     <width>791</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Purisa</family>
+     <pointsize>10</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="toolTip">
+    <string>Status</string>
+   </property>
+   <property name="toolTipDuration">
+    <number>1</number>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(255, 255, 255);
+color: rgb(34, 15, 15);
+</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QTabWidget" name="tabWidget">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>50</y>
+     <width>881</width>
+     <height>561</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>Choose tab according to usage</string>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(12, 12, 31);</string>
+   </property>
+   <property name="tabPosition">
+    <enum>QTabWidget::North</enum>
+   </property>
+   <property name="currentIndex">
+    <number>1</number>
+   </property>
+   <property name="movable">
+    <bool>false</bool>
+   </property>
+   <widget class="QWidget" name="tab_5">
+    <attribute name="title">
+     <string>Online evaluation</string>
+    </attribute>
+    <widget class="QPushButton" name="pbOnline">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>390</x>
+       <y>480</y>
+       <width>131</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>Run the application</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(251, 250, 250);
+color: rgb(16, 0, 0);</string>
+     </property>
+     <property name="text">
+      <string>Run</string>
+     </property>
+    </widget>
+    <widget class="QStackedWidget" name="stackedWidget">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>871</width>
+       <height>421</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="page">
+      <widget class="QListWidget" name="listWidgetAuxOnline">
+       <property name="geometry">
+        <rect>
+         <x>440</x>
+         <y>30</y>
+         <width>191</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>Auxiliary cameras will be diplayed here</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(255, 255, 255);</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_7">
+       <property name="geometry">
+        <rect>
+         <x>470</x>
+         <y>0</y>
+         <width>141</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(255, 255, 255);</string>
+       </property>
+       <property name="text">
+        <string>Auxiliary Cameras</string>
+       </property>
+      </widget>
+      <widget class="QListWidget" name="listWidgetEndoOnline">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>30</y>
+         <width>191</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>Endoscpic cameras will be diplayed here</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(255, 255, 255);</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_endo">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>90</y>
+         <width>350</width>
+         <height>250</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>View output from the endoscopic cameras</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(171, 161, 152);
+border-color: rgb(109, 45, 239);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_aux">
+       <property name="geometry">
+        <rect>
+         <x>370</x>
+         <y>90</y>
+         <width>350</width>
+         <height>250</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>View output from the auxiliary cameras</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(171, 161, 152);
+border-color: rgb(109, 45, 239);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_8">
+       <property name="geometry">
+        <rect>
+         <x>120</x>
+         <y>0</y>
+         <width>141</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(255, 255, 255);</string>
+       </property>
+       <property name="text">
+        <string>Endoscopy Cameras</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_11">
+       <property name="geometry">
+        <rect>
+         <x>260</x>
+         <y>390</y>
+         <width>341</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(255, 255, 255);</string>
+       </property>
+       <property name="text">
+        <string>Adjust camera parameters to get the proper view</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="checkBox">
+       <property name="geometry">
+        <rect>
+         <x>730</x>
+         <y>100</y>
+         <width>131</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(255, 255, 255);</string>
+       </property>
+       <property name="text">
+        <string>Peg Segment ?</string>
+       </property>
+      </widget>
+      <widget class="QSlider" name="horizontalSlider">
+       <property name="geometry">
+        <rect>
+         <x>730</x>
+         <y>130</y>
+         <width>121</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="value">
+        <number>25</number>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="checkBox_2">
+       <property name="geometry">
+        <rect>
+         <x>730</x>
+         <y>170</y>
+         <width>131</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(255, 255, 255);</string>
+       </property>
+       <property name="text">
+        <string>Ring Segment ?</string>
+       </property>
+      </widget>
+      <widget class="QSlider" name="horizontalSlider_2">
+       <property name="geometry">
+        <rect>
+         <x>730</x>
+         <y>200</y>
+         <width>121</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="value">
+        <number>34</number>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="page_2"/>
+    </widget>
+    <widget class="QCheckBox" name="checkBoxRecordEndo">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>10</y>
+       <width>221</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>Record endoscopy video during evaluation process</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgba(255, 255, 255, 254);
+background-color: rgb(27, 27, 45);</string>
+     </property>
+     <property name="text">
+      <string>Record endoscopic camera ?</string>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBoxRecordAux">
+     <property name="geometry">
+      <rect>
+       <x>440</x>
+       <y>10</y>
+       <width>204</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>Record auxiliary video during evaluation process</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 255, 255);
+background-color: rgb(27, 27, 44);</string>
+     </property>
+     <property name="text">
+      <string>Record Auxiliary camera ?</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_3">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>490</y>
+       <width>16</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>490</y>
+       <width>251</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>I accept to give consent for the study</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab">
+    <attribute name="title">
+     <string>Record</string>
+    </attribute>
+    <widget class="QPushButton" name="pbOffline">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>380</x>
+       <y>480</y>
+       <width>131</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>Run the application</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(251, 250, 250);
+color: rgb(16, 0, 0);</string>
+     </property>
+     <property name="text">
+      <string>Record</string>
+     </property>
+    </widget>
+    <widget class="QStackedWidget" name="stackedWidget_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>871</width>
+       <height>421</height>
+      </rect>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="page_3">
+      <widget class="QLabel" name="label_10">
+       <property name="geometry">
+        <rect>
+         <x>120</x>
+         <y>0</y>
+         <width>141</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(255, 255, 255);</string>
+       </property>
+       <property name="text">
+        <string>Endoscopy Cameras</string>
+       </property>
+      </widget>
+      <widget class="QListWidget" name="listWidgetAuxOffline">
+       <property name="geometry">
+        <rect>
+         <x>550</x>
+         <y>30</y>
+         <width>211</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>Auxiliary cameras will be diplayed here</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(255, 255, 255);</string>
+       </property>
+      </widget>
+      <widget class="QListWidget" name="listWidgetEndoOffline">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>30</y>
+         <width>211</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>Endoscpic cameras will be diplayed here</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(255, 255, 255);</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_9">
+       <property name="geometry">
+        <rect>
+         <x>580</x>
+         <y>0</y>
+         <width>141</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(255, 255, 255);</string>
+       </property>
+       <property name="text">
+        <string>Auxiliary Cameras</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_endo_2">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>90</y>
+         <width>420</width>
+         <height>300</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>View output from the endoscopic cameras</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(171, 161, 152);
+border-color: rgb(109, 45, 239);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_aux_2">
+       <property name="geometry">
+        <rect>
+         <x>440</x>
+         <y>90</y>
+         <width>420</width>
+         <height>300</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>View output from the auxiliary cameras</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(171, 161, 152);
+border-color: rgb(109, 45, 239);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_12">
+       <property name="geometry">
+        <rect>
+         <x>250</x>
+         <y>390</y>
+         <width>341</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(255, 255, 255);</string>
+       </property>
+       <property name="text">
+        <string>Adjust camera parameters to get the proper view</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="page_4"/>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_2">
+    <attribute name="title">
+     <string>Practice</string>
+    </attribute>
+    <widget class="QListWidget" name="listWidgetPractice">
+     <property name="geometry">
+      <rect>
+       <x>310</x>
+       <y>50</y>
+       <width>191</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>Endoscpic cameras will be diplayed here</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 255, 255);</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pbPractice">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>360</x>
+       <y>480</y>
+       <width>131</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>Run the application</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(251, 250, 250);
+color: rgb(16, 0, 0);</string>
+     </property>
+     <property name="text">
+      <string>Run</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_5">
+     <property name="geometry">
+      <rect>
+       <x>330</x>
+       <y>20</y>
+       <width>141</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>Endoscopy Cameras</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_endo_3">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>110</y>
+       <width>420</width>
+       <height>300</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>View output from the endoscopic cameras</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(171, 161, 152);
+border-color: rgb(109, 45, 239);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_13">
+     <property name="geometry">
+      <rect>
+       <x>260</x>
+       <y>420</y>
+       <width>341</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>Adjust camera parameters to get the proper view</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_3">
+    <attribute name="title">
+     <string>Evaluate existing videos</string>
+    </attribute>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>534</width>
+       <height>63</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string/>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QPushButton" name="pushButton">
+        <property name="text">
+         <string>Open Auxiliary Video</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_3">
+        <property name="text">
+         <string>Open timestamp file</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_2">
+        <property name="text">
+         <string>Open Endoscopy Video</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QPushButton" name="pushButton_4">
+     <property name="geometry">
+      <rect>
+       <x>570</x>
+       <y>40</y>
+       <width>141</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Evaluate</string>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QComboBox" name="selectLevel">
+   <property name="geometry">
+    <rect>
+     <x>670</x>
+     <y>4</y>
+     <width>241</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>Select levle of the difficulty</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(30, 11, 11);
+background-color: rgb(251, 250, 250);</string>
+   </property>
+   <item>
+    <property name="text">
+     <string>Level 1 - No plate movement - 0 degree scope</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Level 2 - No plate movement - 30 degree scope</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Level 3 - No plate movement - 45degree scope</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Level 4 - Slow plate movement - 0 degree scope</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Level 5 - Slow plate movement - 30 degree scope</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Level 6 - Slow plate movement - 45 degree scope</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Level 7 - Fast plate movement - 0 degree scope</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Level 8 - Fast plate movement - 30 degree scope</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Level 9 - Fast plate movement - 45 degree scope</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>10</y>
+     <width>139</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string>Name of the Trainee</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>580</x>
+     <y>10</y>
+     <width>82</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string>Select Level</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEditDrName">
+   <property name="geometry">
+    <rect>
+     <x>270</x>
+     <y>4</y>
+     <width>301</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>Give name of the Trainee</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string>Dr. </string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pbQuit">
+   <property name="geometry">
+    <rect>
+     <x>810</x>
+     <y>620</y>
+     <width>99</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 236, 236);
+background-color: rgb(245, 18, 18);</string>
+   </property>
+   <property name="text">
+    <string>Quit</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pbSettings">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>4</y>
+     <width>99</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>call the setting GUI</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 236, 236);
+background-color: rgb(95, 151, 95);</string>
+   </property>
+   <property name="text">
+    <string>Settings</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pbRefresh">
+   <property name="geometry">
+    <rect>
+     <x>800</x>
+     <y>40</y>
+     <width>99</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>Refresh to connect to camera</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 236, 236);
+background-color: rgb(3, 3, 3);</string>
+   </property>
+   <property name="text">
+    <string>Refresh</string>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normalon>:/icons/Refresh.png</normalon>
+    </iconset>
+   </property>
+  </widget>
+  <zorder>selectLevel</zorder>
+  <zorder>label_3</zorder>
+  <zorder>lineEditDrName</zorder>
+  <zorder>tabWidget</zorder>
+  <zorder>label_status</zorder>
+  <zorder>label_2</zorder>
+  <zorder>pbQuit</zorder>
+  <zorder>pbSettings</zorder>
+  <zorder>pbRefresh</zorder>
+ </widget>
+ <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>selectLevel</tabstop>
+  <tabstop>lineEditDrName</tabstop>
+  <tabstop>pbOffline</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

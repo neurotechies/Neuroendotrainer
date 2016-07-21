@@ -1,0 +1,18 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>images/endo.jpg</file>
+        <file>images/endo.png</file>
+        <file>images/fullscreen.png</file>
+        <file>images/pause.png</file>
+        <file>images/play.png</file>
+        <file>images/stop.png</file>
+        <file>FullscreenT.png</file>
+        <file>PauseT.png</file>
+        <file>StartT.png</file>
+        <file>StopT.png</file>
+        <file>Refresh.png</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>Refresh.png</file>
+    </qresource>
+</RCC>
