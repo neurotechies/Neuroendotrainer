@@ -55,7 +55,6 @@ public slots:
 
 private:
     //pylon specific
-
     CDeviceInfo info;               // Device info to create camera
     CGrabResultPtr ptrGrabResult;   // Grabber pointer from camera
     Camera_t camera;                // camera object
@@ -103,7 +102,7 @@ public:
     //timestamp
     vector<string> timestamp_aux;
 
-signals:
+signals:2
      void finished();
 
 public slots:

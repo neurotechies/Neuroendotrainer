@@ -24,7 +24,8 @@ SOURCES += main.cpp\
     buf_endo.cpp \
     usbcamrecorddisp.cpp \
     auxCamRecord.cpp \
-    params.cpp
+    params.cpp \
+    serialcomm.cpp
 
 HEADERS  += qmainwindow.h \
     settings_main.h \
@@ -37,7 +38,8 @@ HEADERS  += qmainwindow.h \
     buf_endo.h \
     usbcamrecorddisp.h \
     auxCamRecord.h \
-    params.h
+    params.h \
+    serialcomm.h
 
 FORMS    += qmainwindow.ui \
     settings_main.ui \

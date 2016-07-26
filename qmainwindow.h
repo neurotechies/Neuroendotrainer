@@ -16,6 +16,7 @@
 #include <vector>
 #include "params.h"
 #include "settings_main.h"
+#inclide "serialcomm.h"
 
 using namespace std;
 
@@ -69,11 +70,15 @@ private:
     QThread* mThread_aux_producer;
     QThread* mThread_aux_consumer;
 
+    QThread* mThread_serialComm;
+
     usbCamRecordDisp_producer* mProducer_endo;
     usbCamRecordDisp_consumer* mConsumer_endo;
 
     auxCamRecord_producer* mProducer_aux;
     auxCamRecord_consumer* mConsumer_aux;
+
+    serialcomm mSerial;
 
     string type;
     int level;
