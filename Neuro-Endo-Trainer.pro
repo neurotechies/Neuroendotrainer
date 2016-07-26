@@ -25,7 +25,8 @@ SOURCES += main.cpp\
     usbcamrecorddisp.cpp \
     auxCamRecord.cpp \
     params.cpp \
-    serialcomm.cpp
+    serialcomm.cpp \
+    Scorer.cpp
 
 HEADERS  += qmainwindow.h \
     settings_main.h \
@@ -39,7 +40,8 @@ HEADERS  += qmainwindow.h \
     usbcamrecorddisp.h \
     auxCamRecord.h \
     params.h \
-    serialcomm.h
+    serialcomm.h \
+    Scorer.h
 
 FORMS    += qmainwindow.ui \
     settings_main.ui \

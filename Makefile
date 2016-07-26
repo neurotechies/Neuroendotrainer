@@ -60,7 +60,9 @@ SOURCES       = main.cpp \
 		buf_endo.cpp \
 		usbcamrecorddisp.cpp \
 		auxCamRecord.cpp \
-		params.cpp qrc_resources.cpp \
+		params.cpp \
+		serialcomm.cpp \
+		Scorer.cpp qrc_resources.cpp \
 		moc_qmainwindow.cpp \
 		moc_settings_main.cpp \
 		moc_settings.cpp \
@@ -69,7 +71,8 @@ SOURCES       = main.cpp \
 		moc_testUSB.cpp \
 		moc_qtopencvviewergl.cpp \
 		moc_usbcamrecorddisp.cpp \
-		moc_auxCamRecord.cpp
+		moc_auxCamRecord.cpp \
+		moc_serialcomm.cpp
 OBJECTS       = main.o \
 		qmainwindow.o \
 		settings_main.o \
@@ -83,6 +86,8 @@ OBJECTS       = main.o \
 		usbcamrecorddisp.o \
 		auxCamRecord.o \
 		params.o \
+		serialcomm.o \
+		Scorer.o \
 		qrc_resources.o \
 		moc_qmainwindow.o \
 		moc_settings_main.o \
@@ -92,7 +97,8 @@ OBJECTS       = main.o \
 		moc_testUSB.o \
 		moc_qtopencvviewergl.o \
 		moc_usbcamrecorddisp.o \
-		moc_auxCamRecord.o
+		moc_auxCamRecord.o \
+		moc_serialcomm.o
 DIST          = ../../Qt5.5.1/5.5/gcc_64/mkspecs/features/spec_pre.prf \
 		../../Qt5.5.1/5.5/gcc_64/mkspecs/common/unix.conf \
 		../../Qt5.5.1/5.5/gcc_64/mkspecs/common/linux.conf \
@@ -238,7 +244,9 @@ DIST          = ../../Qt5.5.1/5.5/gcc_64/mkspecs/features/spec_pre.prf \
 		buf_endo.h \
 		usbcamrecorddisp.h \
 		auxCamRecord.h \
-		params.h main.cpp \
+		params.h \
+		serialcomm.h \
+		Scorer.h main.cpp \
 		qmainwindow.cpp \
 		settings_main.cpp \
 		settings.cpp \
@@ -250,7 +258,9 @@ DIST          = ../../Qt5.5.1/5.5/gcc_64/mkspecs/features/spec_pre.prf \
 		buf_endo.cpp \
 		usbcamrecorddisp.cpp \
 		auxCamRecord.cpp \
-		params.cpp
+		params.cpp \
+		serialcomm.cpp \
+		Scorer.cpp
 QMAKE_TARGET  = Neuro-Endo-Trainer
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = Neuro-Endo-Trainer
@@ -583,8 +593,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents resources.qrc $(DISTDIR)/
-	$(COPY_FILE) --parents qmainwindow.h settings_main.h settings.h testBasler.h testIDS.h testUSB.h qtopencvviewergl.h buf_aux.h buf_endo.h usbcamrecorddisp.h auxCamRecord.h params.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp qmainwindow.cpp settings_main.cpp settings.cpp testBasler.cpp testIDS.cpp testUSB.cpp qtopencvviewergl.cpp buf_aux.cpp buf_endo.cpp usbcamrecorddisp.cpp auxCamRecord.cpp params.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents qmainwindow.h settings_main.h settings.h testBasler.h testIDS.h testUSB.h qtopencvviewergl.h buf_aux.h buf_endo.h usbcamrecorddisp.h auxCamRecord.h params.h serialcomm.h Scorer.h $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp qmainwindow.cpp settings_main.cpp settings.cpp testBasler.cpp testIDS.cpp testUSB.cpp qtopencvviewergl.cpp buf_aux.cpp buf_endo.cpp usbcamrecorddisp.cpp auxCamRecord.cpp params.cpp serialcomm.cpp Scorer.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents qmainwindow.ui settings_main.ui settings.ui $(DISTDIR)/
 
 
@@ -624,9 +634,9 @@ qrc_resources.cpp: resources.qrc \
 		images/pause.png
 	/home/terminalx/Qt5.5.1/5.5/gcc_64/bin/rcc -name resources resources.qrc -o qrc_resources.cpp
 
-compiler_moc_header_make_all: moc_qmainwindow.cpp moc_settings_main.cpp moc_settings.cpp moc_testBasler.cpp moc_testIDS.cpp moc_testUSB.cpp moc_qtopencvviewergl.cpp moc_usbcamrecorddisp.cpp moc_auxCamRecord.cpp
+compiler_moc_header_make_all: moc_qmainwindow.cpp moc_settings_main.cpp moc_settings.cpp moc_testBasler.cpp moc_testIDS.cpp moc_testUSB.cpp moc_qtopencvviewergl.cpp moc_usbcamrecorddisp.cpp moc_auxCamRecord.cpp moc_serialcomm.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_qmainwindow.cpp moc_settings_main.cpp moc_settings.cpp moc_testBasler.cpp moc_testIDS.cpp moc_testUSB.cpp moc_qtopencvviewergl.cpp moc_usbcamrecorddisp.cpp moc_auxCamRecord.cpp
+	-$(DEL_FILE) moc_qmainwindow.cpp moc_settings_main.cpp moc_settings.cpp moc_testBasler.cpp moc_testIDS.cpp moc_testUSB.cpp moc_qtopencvviewergl.cpp moc_usbcamrecorddisp.cpp moc_auxCamRecord.cpp moc_serialcomm.cpp
 moc_qmainwindow.cpp: ../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/QMainWindow \
 		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/qmainwindow.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/qwidget.h \
@@ -3311,6 +3321,65 @@ moc_auxCamRecord.cpp: ../../Qt5.5.1/5.5/gcc_64/include/QtCore/QThread \
 		auxCamRecord.h
 	/home/terminalx/Qt5.5.1/5.5/gcc_64/bin/moc $(DEFINES) -I/home/terminalx/Qt5.5.1/5.5/gcc_64/mkspecs/linux-g++ -I/home/terminalx/Dropbox/Neuro-Endo-Trainer -I/opt/pylon3/include -I/opt/pylon3/genicam/library/CPP/include -I/usr/local/include -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtMultimediaWidgets -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtMultimedia -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtOpenGL -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtWidgets -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtGui -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtNetwork -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtCore auxCamRecord.h -o moc_auxCamRecord.cpp
 
+moc_serialcomm.cpp: ../../Qt5.5.1/5.5/gcc_64/include/QtCore/QThread \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qthread.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qobject.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qobjectdefs.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qnamespace.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qglobal.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qconfig.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qfeatures.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qsystemdetection.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qprocessordetection.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qcompilerdetection.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qtypeinfo.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qtypetraits.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qsysinfo.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qlogging.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qflags.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qatomic.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qbasicatomic.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qgenericatomic.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qatomic_cxx11.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qatomic_gcc.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qatomic_msvc.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qatomic_armv7.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qatomic_armv6.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qatomic_armv5.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qatomic_ia64.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qatomic_mips.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qatomic_x86.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qatomic_unix.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qglobalstatic.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qmutex.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qnumeric.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qstring.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qchar.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qbytearray.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qrefcount.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qarraydata.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qstringbuilder.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qlist.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qalgorithms.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qiterator.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qbytearraylist.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qstringlist.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qregexp.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qstringmatcher.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qcoreevent.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qscopedpointer.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qmetatype.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qvarlengtharray.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qcontainerfwd.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qisenum.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qobject_impl.h \
+		/usr/local/include/serial/serial.h \
+		/usr/local/include/serial/v8stdint.h \
+		serialcomm.h
+	/home/terminalx/Qt5.5.1/5.5/gcc_64/bin/moc $(DEFINES) -I/home/terminalx/Qt5.5.1/5.5/gcc_64/mkspecs/linux-g++ -I/home/terminalx/Dropbox/Neuro-Endo-Trainer -I/opt/pylon3/include -I/opt/pylon3/genicam/library/CPP/include -I/usr/local/include -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtMultimediaWidgets -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtMultimedia -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtOpenGL -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtWidgets -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtGui -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtNetwork -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtCore serialcomm.h -o moc_serialcomm.cpp
+
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
 compiler_uic_make_all: ui_qmainwindow.h ui_settings_main.h ui_settings.h
@@ -4612,6 +4681,7 @@ settings_main.o: settings_main.cpp settings_main.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/qlistview.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/QPushButton \
 		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/qpushbutton.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/QSlider \
 		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/QStackedWidget \
 		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/qstackedwidget.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/QTabWidget \
@@ -6884,6 +6954,68 @@ auxCamRecord.o: auxCamRecord.cpp auxCamRecord.h \
 params.o: params.cpp params.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o params.o params.cpp
 
+serialcomm.o: serialcomm.cpp serialcomm.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/QThread \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qthread.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qobject.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qobjectdefs.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qnamespace.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qglobal.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qconfig.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qfeatures.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qsystemdetection.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qprocessordetection.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qcompilerdetection.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qtypeinfo.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qtypetraits.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qsysinfo.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qlogging.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qflags.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qatomic.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qbasicatomic.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qgenericatomic.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qatomic_cxx11.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qatomic_gcc.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qatomic_msvc.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qatomic_armv7.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qatomic_armv6.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qatomic_armv5.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qatomic_ia64.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qatomic_mips.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qatomic_x86.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qatomic_unix.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qglobalstatic.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qmutex.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qnumeric.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qstring.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qchar.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qbytearray.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qrefcount.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qarraydata.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qstringbuilder.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qlist.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qalgorithms.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qiterator.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qbytearraylist.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qstringlist.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qregexp.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qstringmatcher.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qcoreevent.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qscopedpointer.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qmetatype.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qvarlengtharray.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qcontainerfwd.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qisenum.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qobject_impl.h \
+		/usr/local/include/serial/serial.h \
+		/usr/local/include/serial/v8stdint.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o serialcomm.o serialcomm.cpp
+
+Scorer.o: Scorer.cpp Scorer.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Scorer.o Scorer.cpp
+
 qrc_resources.o: qrc_resources.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_resources.o qrc_resources.cpp
 
@@ -6913,6 +7045,9 @@ moc_usbcamrecorddisp.o: moc_usbcamrecorddisp.cpp
 
 moc_auxCamRecord.o: moc_auxCamRecord.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_auxCamRecord.o moc_auxCamRecord.cpp
+
+moc_serialcomm.o: moc_serialcomm.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_serialcomm.o moc_serialcomm.cpp
 
 ####### Install
 

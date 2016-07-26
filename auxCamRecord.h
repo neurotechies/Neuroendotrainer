@@ -34,7 +34,6 @@ class auxCamRecord_producer:public QObject
     Q_OBJECT
 public:
     auxCamRecord_producer();
-
     // Initialize the private members after set button press
     bool initialize(const params &par, string &errmsg);
     void evaluate();
@@ -44,7 +43,6 @@ public:
 
     // dtor
     ~auxCamRecord_producer();
-
 
 signals:
      void finished();
@@ -102,7 +100,7 @@ public:
     //timestamp
     vector<string> timestamp_aux;
 
-signals:2
+signals:
      void finished();
 
 public slots:

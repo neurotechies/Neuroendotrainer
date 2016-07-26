@@ -119,7 +119,10 @@ void auxCamRecord_producer::abort()
 void auxCamRecord_producer::processFrame(const cv::Mat &current_frame)
 {
     // process the current frame; Entry point for the online evaluation for the auxiliary camera.
+    if(m_eval)
+    {
 
+    }
 }
 
 void auxCamRecord_producer::process()
@@ -167,6 +170,7 @@ void auxCamRecord_producer::process()
                     //cout << "conversion complete\n";
                     //std::copy ( temp_rgb.begin(), temp_rgb.begin() + (size_1_rgb), vec_frame_ax_rgb.begin() + ((i) * (size_1_rgb)));
                     vec_frame_ax_rgb[i] = img3u;
+                    processFrame(img3u);
                 }
                 else
                 {

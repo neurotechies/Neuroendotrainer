@@ -218,6 +218,7 @@ void qMainWindow::on_actionStart_Activity_triggered()
                  mConsumer_aux->startGrabbing();
              }
               ui->statusBar->showMessage("Press Stop to stop your online evaluation. Follow the Red LED to put the ring");
+              mProducer_aux->evaluate();
          }
          ui->actionStop_2->setEnabled(true);
          ui->actionStart_Activity->setEnabled(false);
