@@ -23,6 +23,7 @@
 
 using namespace std;
 using namespace cv;
+typedef cv::Mat myMat;
 
 class testUSB: public QObject
 {
@@ -34,13 +35,15 @@ public:
     bool m_abort;
 
     bool m_start;
+
+    bool m_pause;
     
     int initialize(params &param, vector<string> &devs_endo);
 
     // dtor
     ~testUSB();
 signals:
-    void sendtoUI(const QImage &);
+    void sendtoUI(const myMat &);
     void finished();
 
 public slots:

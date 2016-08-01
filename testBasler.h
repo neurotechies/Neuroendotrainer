@@ -24,7 +24,7 @@ using namespace Pylon;
 using namespace Basler_GigECameraParams;
 using namespace cv;
 typedef Pylon::CBaslerGigEInstantCamera Camera_t;
-
+typedef cv::Mat myMat;
 
 
 class testBasler: public QObject
@@ -37,6 +37,8 @@ public:
     bool m_abort;
 
     bool m_start;
+
+    bool m_pause;
     // Initialize the private members after set button press
     // Return false if it fails
     bool initialize(params &param, string &errmsg);
@@ -45,8 +47,7 @@ public:
     ~testBasler();
 
 signals:
-    // send the 420x300 to UI
-    void sendtoUI(const QImage &);
+    void sendtoUI(const myMat &);
     void finished();
 
 public slots:
@@ -65,5 +66,6 @@ private:
     uint size_1_rgb;                // size of rgb frame (rows*cols*3)
     uint size_1_yuv;                // size of yuv frame (rows*cols*2)
     uint n_channels;                // 3
+
 };
 #endif

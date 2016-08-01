@@ -2,6 +2,7 @@
 #define SETTINGS_MAIN_H
 
 #include <QDialog>
+#include <QDebug>
 #include <string>
 #include <QImage>
 #include <QFileInfo>
@@ -11,6 +12,7 @@
 #include <QtCore>
 #include <opencv2/opencv.hpp>
 #include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
 #include <QTimer>
 #include <QCameraInfo>
 #include <sys/time.h>
@@ -23,10 +25,11 @@
 #include "qmainwindow.h"
 #include "settings.h"
 #include "params.h";
-
+#include "Gui.h"
 
 using namespace std;
 using namespace cv;
+typedef cv::Mat myMat;
 
 namespace Ui {
 class settings_main;
@@ -42,6 +45,7 @@ public:
 
     void clearUI();
     //virtual void closeEvent(QCloseEvent *event);
+    Gui *gui;
 private slots:
     void on_tabWidget_tabBarClicked(int index);
     void on_pbPractice_clicked();
@@ -49,8 +53,8 @@ private slots:
     void on_pbOffline_clicked();
     void on_listWidgetEndoOnline_clicked(const QModelIndex &index);
     void on_listWidgetAuxOnline_clicked(const QModelIndex &index);
-    void updatelblAux(const QImage &);
-    void updatelblEndo(const QImage &);
+    void updatelblAux(const myMat &);
+    void updatelblEndo(const myMat &);
     void on_pbQuit_clicked();
     void on_listWidgetAuxOffline_clicked(const QModelIndex &index);
     void on_listWidgetEndoOffline_clicked(const QModelIndex &index);
@@ -58,8 +62,21 @@ private slots:
     void on_pbRefresh_clicked();
     void openSettingsDialog();
     void updateParameters(const params &params);
-
     bool initialSetup();
+
+
+    void on_checkCalib_clicked(bool checked);
+
+
+    void on_checkBox_3_clicked(bool checked);
+
+    void on_radioPegSegment_clicked(bool checked);
+
+    void on_radioRingSegment_clicked(bool checked);
+
+    void on_radioToolTipSegment_clicked(bool checked);
+
+    void on_radioBoundingBox_clicked(bool checked);
 
 private:
     void cleanup();
@@ -74,6 +91,9 @@ private:
     QThread* thread_endo;
     QThread* thread_aux;
 
+    cv::Mat AuxImg;
+    cv::Mat EndoImg;
+
     params parameters;
 
     int cameraCountEndo;
@@ -82,6 +102,9 @@ private:
     string devAux;
     string errmsg;
     vector<string> devs_endo;
+    Mat img3u_disp;
+    Mat img3u_disp1;
+    Rect pegGroupROI;
 
 };
 #endif

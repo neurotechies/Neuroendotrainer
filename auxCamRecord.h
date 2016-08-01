@@ -19,6 +19,7 @@
 #include <vector>
 #include <sys/time.h>
 #include <stdexcept>
+#include <time.h>
 #include "/usr/include/ueye.h"
 #include "params.h"
 
@@ -39,7 +40,7 @@ public:
     void evaluate();
     void abort();
     void processFrame(const cv::Mat &current_frame);
-
+    const string currentDateTime();
 
     // dtor
     ~auxCamRecord_producer();

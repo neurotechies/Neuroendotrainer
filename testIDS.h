@@ -21,7 +21,7 @@
 #include "params.h"
 using namespace std;
 using namespace cv;
-
+typedef cv::Mat myMat;
 
 class testIDS: public QObject
 {
@@ -40,7 +40,7 @@ public:
     // dtor
     ~testIDS();
 signals:
-    void sendtoUI(const QImage &);
+    void sendtoUI(const myMat &);
     void finished();
 
 public slots:

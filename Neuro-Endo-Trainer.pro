@@ -26,7 +26,8 @@ SOURCES += main.cpp\
     auxCamRecord.cpp \
     params.cpp \
     serialcomm.cpp \
-    Scorer.cpp
+    Scorer.cpp \
+    Gui.cpp
 
 HEADERS  += qmainwindow.h \
     settings_main.h \
@@ -41,7 +42,8 @@ HEADERS  += qmainwindow.h \
     auxCamRecord.h \
     params.h \
     serialcomm.h \
-    Scorer.h
+    Scorer.h \
+    Gui.h
 
 FORMS    += qmainwindow.ui \
     settings_main.ui \
@@ -77,6 +79,7 @@ LIBS += -lpthread
 LIBS += -lv4l2
 LIBS += -lX11
 LIBS += -lueye_api
+LIBS += -lserial
 
 
 

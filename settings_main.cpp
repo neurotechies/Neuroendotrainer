@@ -1,6 +1,6 @@
 #include "settings_main.h"
 #include "ui_settings_main.h"
-
+#include "Gui.h"
 
 Q_DECLARE_METATYPE(QCameraInfo)
 
@@ -17,6 +17,13 @@ settings_main::settings_main(QWidget *parent) :
     connect(mSettings, SIGNAL(makeUpdateParams(params)), this, SLOT(updateParameters(params)));
     //connect(mainWindow, SIGNAL(ReinitializeSettings_Main()), this, SLOT(initialSetup()));
     initialSetup();
+
+    img3u_disp = Mat::zeros(280, 350, CV_8UC3);
+    img3u_disp1 = Mat::zeros(280, 350, CV_8UC3);
+
+    pegGroupROI = Rect(100, 100, 500, 400);
+
+    gui = new Gui;
 }
 
 void settings_main::clearUI()
@@ -62,7 +69,9 @@ bool settings_main::initialSetup()
         mTest_USB->moveToThread(thread_endo);
         connect(thread_endo, SIGNAL(started()), mTest_USB, SLOT(process()));
         connect(mTest_USB, SIGNAL(finished()), thread_endo, SLOT(quit()));
-        connect(mTest_USB, SIGNAL(sendtoUI(const QImage &)), this, SLOT(updatelblEndo(const QImage &)));
+
+        qRegisterMetaType< myMat>("const myMat &");
+        connect(mTest_USB, SIGNAL(sendtoUI(const myMat &)), this, SLOT(updatelblEndo(const myMat &)), Qt::QueuedConnection);
         thread_endo->start();
         usleep(10000);
         mTest_USB->m_start = true;
@@ -111,7 +120,9 @@ bool settings_main::initialSetup()
             mTest_IDS->moveToThread(thread_aux);
             connect(thread_aux, SIGNAL(started()), mTest_IDS, SLOT(process()));
             connect(mTest_IDS, SIGNAL(finished()), thread_aux, SLOT(quit()));
-            connect(mTest_IDS, SIGNAL(sendtoUI(const QImage &)), this, SLOT(updatelblAux(const QImage &)));
+
+            qRegisterMetaType< myMat>("const myMat &");
+            connect(mTest_IDS, SIGNAL(sendtoUI(const myMat &)), this, SLOT(updatelblAux(const myMat &)), Qt::QueuedConnection);
 
             mTest_IDS->m_start = true;
             usleep(10000);
@@ -125,7 +136,9 @@ bool settings_main::initialSetup()
             mTest_Basler->moveToThread(thread_aux);
             connect(thread_aux, SIGNAL(started()), mTest_Basler, SLOT(process()));
             connect(mTest_Basler, SIGNAL(finished()), thread_aux, SLOT(quit()));
-            connect(mTest_Basler, SIGNAL(sendtoUI(const QImage &)), this, SLOT(updatelblAux(const QImage &)));
+
+            qRegisterMetaType< myMat>("const myMat &");
+            connect(mTest_Basler, SIGNAL(sendtoUI(const myMat &)), this, SLOT(updatelblAux(const myMat &)), Qt::QueuedConnection);
             mTest_Basler->m_start = true;
             usleep(10000);
             delete mTest_IDS; mTest_IDS = NULL;
@@ -159,27 +172,33 @@ bool settings_main::initialSetup()
 }
 
 
-void settings_main::updatelblAux(const QImage &lblImg)
+void settings_main::updatelblAux(const myMat &lblImg)
 {
+    cvtColor(lblImg, AuxImg, CV_BGR2RGB);
+    cv::resize(lblImg, img3u_disp, img3u_disp.size());
+    QImage qimg((uchar*)img3u_disp.data, 350, 280, img3u_disp.step, QImage::Format_RGB888);
     if(thread_aux->isRunning())
     {
         if(ui->tabWidget->currentIndex() == 0)
-            ui->label_aux->setPixmap(QPixmap::fromImage(lblImg));
+            ui->label_aux->setPixmap(QPixmap::fromImage(qimg));
         if(ui->tabWidget->currentIndex() == 1)
-            ui->label_aux_2->setPixmap(QPixmap::fromImage(lblImg));
+            ui->label_aux_2->setPixmap(QPixmap::fromImage(qimg));
     }
 }
 
-void settings_main::updatelblEndo(const QImage &lblImg)
+void settings_main::updatelblEndo(const myMat &lblImg)
 {
+    cvtColor(lblImg, EndoImg, CV_BGR2RGB);
+    cv::resize(EndoImg, img3u_disp, img3u_disp.size());
+    QImage qimg((uchar*)img3u_disp.data, 350, 280, img3u_disp.step, QImage::Format_RGB888);
     if(thread_endo->isRunning())
     {
         if(ui->tabWidget->currentIndex() == 0)
-            ui->label_endo->setPixmap(QPixmap::fromImage(lblImg));
+            ui->label_endo->setPixmap(QPixmap::fromImage(qimg));
         if(ui->tabWidget->currentIndex() == 1)
-            ui->label_endo_2->setPixmap(QPixmap::fromImage(lblImg));
+            ui->label_endo_2->setPixmap(QPixmap::fromImage(qimg));
         if(ui->tabWidget->currentIndex() == 2)
-            ui->label_endo_3->setPixmap(QPixmap::fromImage(lblImg));
+            ui->label_endo_3->setPixmap(QPixmap::fromImage(qimg));
     }
 }
 
@@ -435,6 +454,7 @@ settings_main::~settings_main()
     // ""
     cout << "Destructor Triggered \n";
     cleanup();
+    delete gui;
     delete ui;
 }
 
@@ -460,3 +480,115 @@ void settings_main::updateParameters(const params &params)
 }
 
 
+void settings_main::on_checkCalib_clicked(bool checked)
+{
+//    QPalette* palette1 = new QPalette();
+//    QPalette* palette2 = new QPalette();
+//    palette1->setColor(QPalette::Foreground,Qt::white);
+//    palette2->setColor(QPalette::Foreground,Qt::red);
+    if(checked)
+    {
+        mTest_Basler->m_pause = true;
+        ui->radioPegSegment->setEnabled(true);
+        ui->radioBoundingBox->setEnabled(true);
+        //ui->radioPegSegment->setPalette(*palette1);
+        //ui->radioPegSegment->setText("Peg Segment?");
+        //ui->radioPegSegment->setPalette(*palette1);
+
+        ui->radioRingSegment->setEnabled(true);
+        //ui->radioRingSegment->setPalette(*palette1);
+
+        ui->radioToolTipSegment->setEnabled(true);
+        //ui->radioToolTipSegment->setPalette(*palette1);
+
+        ui->sliderPegSegment->setEnabled(true);
+        ui->sliderRingSegment->setEnabled(true);
+    }
+    else
+    {
+        mTest_Basler->m_pause = false;
+        ui->radioPegSegment->setEnabled(false);
+        //ui->radioPegSegment->setPalette(*palette2);
+
+        ui->radioRingSegment->setEnabled(false);
+        //ui->radioRingSegment->setPalette(*palette2);
+
+        ui->radioToolTipSegment->setEnabled(false);
+        //ui->radioToolTipSegment->setPalette(*palette2);
+        ui->radioBoundingBox->setEnabled(false);
+
+        ui->sliderPegSegment->setEnabled(false);
+        ui->sliderRingSegment->setEnabled(false);
+    }
+}
+
+
+void settings_main::on_radioPegSegment_clicked(bool checked)
+{
+
+
+}
+
+void settings_main::on_radioRingSegment_clicked(bool checked)
+{
+
+}
+
+void settings_main::on_radioToolTipSegment_clicked(bool checked)
+{
+
+}
+
+
+void settings_main::on_checkBox_3_clicked(bool checked)
+{
+    if(checked)
+    {
+        ui->pbOnline->setEnabled(true);
+    }
+    else
+    {
+        ui->pbOnline->setEnabled(false);
+    }
+}
+
+
+void settings_main::on_radioBoundingBox_clicked(bool checked)
+{
+    // code to get the bounding box of the working area
+    qDebug() << "done 1";
+    cv::Mat img1;
+
+    cv::resize(AuxImg, img1, Size(750, 600));
+    qDebug() << "done 2";
+    IplImage* img = cvCreateImage(cvSize(img1.cols,img1.rows),8,3);
+    IplImage ipltemp = img1;
+    cvCopy(&ipltemp,img);
+    qDebug() << "done 3";
+    IplImage* im1 = cvCloneImage(img);
+    string message = "Press Enter to confirm the bounding box or any other key to redraw the bounding box";
+    cvRectangle(im1, pegGroupROI.tl(), pegGroupROI.br(), CV_RGB(255, 0, 0), 3);
+    CvFont font1;
+    cvInitFont(&font1, CV_FONT_HERSHEY_SIMPLEX, 0.5, 0.5, 0, 1, 8);
+    cvPutText(im1, message.c_str(), cvPoint(0, 60), &font1, cvScalar(255, 255, 0));
+    qDebug() << "done 4";
+    gui->showImage(im1);
+    waitKey(0);
+    qDebug() << "done 5";
+    char key1 = cin.get();
+    qDebug() << static_cast<int>(key1);
+    if ((key1 != '\r' || key1 != '\n'))
+    {
+        CvRect box;
+        IplImage* im2 = cvCloneImage(img);
+        string message = "Draw a bounding box around the pegs and press enter";
+        if (getBBFromUser(im2, box, gui, message) == PROGRAM_EXIT)
+        {
+            return;
+        }
+        qDebug() << "done 4";
+        pegGroupROI = Rect(box);
+        cvReleaseImage(&im2);
+    }
+    cvReleaseImage(&im1);
+}

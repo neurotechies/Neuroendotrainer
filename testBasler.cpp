@@ -2,7 +2,6 @@
 
 testBasler::testBasler()
 {
-
 }
 testBasler::~testBasler()
 {
@@ -16,6 +15,7 @@ bool testBasler::initialize(params &param, string &errmsg)
     bool retVal = false;
     m_abort = false;
     m_start = false;
+    m_pause = false;
     try
     {
         if(!camera.IsOpen())
@@ -56,7 +56,7 @@ void testBasler::process()
 {
     std::vector<unsigned char> temp_rgb(size_1_rgb);
     Mat img3u = Mat::zeros(rows, cols, CV_8UC3);
-    Mat img3u_disp = Mat::zeros(300, 420, CV_8UC3);
+    //Mat img3u_disp = Mat::zeros(280, 350, CV_8UC3);
     while(!m_abort)
     {
         if(m_start)
@@ -84,12 +84,16 @@ void testBasler::process()
                     temp_rgb[p] = r1; temp_rgb[p + 1] = g1; temp_rgb[p + 2] = b1;
                     temp_rgb[p + 3] = r2; temp_rgb[p + 4] = g2; temp_rgb[p + 5] = b2;
                 }
-                //cout << "conversion complete\n";
-                unsigned char* color = img3u.ptr<unsigned char>(0);
-                std::copy (temp_rgb.begin(), temp_rgb.begin() + size_1_rgb, color);
-                resize(img3u, img3u_disp, img3u_disp.size());
-                QImage qimg((uchar*)img3u_disp.data, 420, 300, img3u_disp.step, QImage::Format_RGB888);
-                emit sendtoUI(qimg);
+//                cout << "conversion complete\n";
+                  unsigned char* color = img3u.ptr<unsigned char>(0);
+                  std::copy (temp_rgb.begin(), temp_rgb.begin() + size_1_rgb, color);
+//                resize(img3u, img3u_disp, img3u_disp.size());
+//                //cv::flip( img3u,img3u, 0);
+//                QImage qimg((uchar*)img3u_disp.data, 350, 280, img3u_disp.step, QImage::Format_RGB888);
+                  if(!m_pause)
+                    emit sendtoUI(img3u);
+
+
             }
             else
             {

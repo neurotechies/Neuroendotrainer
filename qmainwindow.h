@@ -16,7 +16,7 @@
 #include <vector>
 #include "params.h"
 #include "settings_main.h"
-#inclide "serialcomm.h"
+#include "serialcomm.h"
 
 using namespace std;
 
@@ -78,7 +78,7 @@ private:
     auxCamRecord_producer* mProducer_aux;
     auxCamRecord_consumer* mConsumer_aux;
 
-    serialcomm mSerial;
+    serialcomm *mSerial;
 
     string type;
     int level;
