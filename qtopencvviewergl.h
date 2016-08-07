@@ -23,8 +23,8 @@ protected:
     void 	paintGL(); /// OpenGL Rendering
     void 	resizeGL(int width, int height);        /// Widget Resize Event
 
-    void        updateScene();
-    void        renderImage();
+    void    updateScene();
+    void    renderImage();
 
 private:
     bool        mSceneChanged;          /// Indicates when OpenGL view is to be redrawn

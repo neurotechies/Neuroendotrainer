@@ -15,6 +15,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <QTimer>
 #include <QCameraInfo>
+#include <QGraphicsScene>
 #include <sys/time.h>
 #include <QDebug>
 #include <QThread>
@@ -25,7 +26,7 @@
 #include "qmainwindow.h"
 #include "settings.h"
 #include "params.h";
-#include "Gui.h"
+
 
 using namespace std;
 using namespace cv;
@@ -45,7 +46,7 @@ public:
 
     void clearUI();
     //virtual void closeEvent(QCloseEvent *event);
-    Gui *gui;
+
 private slots:
     void on_tabWidget_tabBarClicked(int index);
     void on_pbPractice_clicked();
@@ -78,6 +79,14 @@ private slots:
 
     void on_radioBoundingBox_clicked(bool checked);
 
+    void mouseClickOnAuxCam(string &clk, vector<int> &data);
+    void mouseMoveOnAuxCam(vector<int> &data);
+    void mouseReleaseOnAuxCam(vector<int> &data);
+
+protected:
+    virtual void  keyPressEvent(QKeyEvent *event);
+
+
 private:
     void cleanup();
     Ui::settings_main *ui;
@@ -91,7 +100,7 @@ private:
     QThread* thread_endo;
     QThread* thread_aux;
 
-    cv::Mat AuxImg;
+    QImage AuxImg;
     cv::Mat EndoImg;
 
     params parameters;
@@ -105,6 +114,12 @@ private:
     Mat img3u_disp;
     Mat img3u_disp1;
     Rect pegGroupROI;
+
+    QGraphicsScene *scene_aux;
+    QGraphicsScene *scene_endo;
+    QRect boundingRectangle;
+    bool mouseDrag;
+    int x_left_start, y_left_start;
 
 };
 #endif

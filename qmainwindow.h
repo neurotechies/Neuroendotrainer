@@ -16,7 +16,6 @@
 #include <vector>
 #include "params.h"
 #include "settings_main.h"
-#include "serialcomm.h"
 
 using namespace std;
 
@@ -44,11 +43,14 @@ private slots:
 
     void on_action_Horizontal_Flip_triggered(bool checked);
 
-    void updateScreen(const myMat &);
+    void updateScreen_endo(const myMat &);
+    void updateScreen_aux(const myMat &);
 
     void on_actionQuit_triggered();
 
     void on_actionStop_2_triggered();
+
+    void on_actionSwitch_Camera_toggled(bool arg1);
 
 signals:
 //    void ReinitializeSettings_Main();
@@ -77,15 +79,13 @@ private:
 
     auxCamRecord_producer* mProducer_aux;
     auxCamRecord_consumer* mConsumer_aux;
-
-    serialcomm *mSerial;
-
     string type;
     int level;
     string drName;
     string camAux;
     bool RecordOnlineEndo;
     bool RecordOnlineAux;
+    bool switchCam;
 
 
 protected:

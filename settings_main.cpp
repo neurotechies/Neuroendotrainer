@@ -1,6 +1,5 @@
 #include "settings_main.h"
 #include "ui_settings_main.h"
-#include "Gui.h"
 
 Q_DECLARE_METATYPE(QCameraInfo)
 
@@ -22,8 +21,63 @@ settings_main::settings_main(QWidget *parent) :
     img3u_disp1 = Mat::zeros(280, 350, CV_8UC3);
 
     pegGroupROI = Rect(100, 100, 500, 400);
+    scene_aux = new QGraphicsScene;
+    scene_endo = new QGraphicsScene;
+    ui->view_aux->setInteractive(true);
 
-    gui = new Gui;
+    connect(ui->view_aux, SIGNAL(sendMouseClickEvent(string &, vector<int>&)), this, SLOT(mouseClickOnAuxCam(string &, vector<int>&)));
+    connect(ui->view_aux, SIGNAL(sendMouseMoveData(vector<int>&)), this, SLOT(mouseMoveOnAuxCam(vector<int>&)));
+    connect(ui->view_aux, SIGNAL(sendMouseReleaseEvent(vector<int>&)), this, SLOT(mouseReleaseOnAuxCam(vector<int>&)));
+    mouseDrag = false;
+    x_left_start = -1;
+    y_left_start = -1;
+    boundingRectangle = QRect(-1, -1, -1, -1);
+
+}
+
+void settings_main::mouseClickOnAuxCam(string &clk, vector<int> &d)
+{
+    string clickData = clk;
+    //vector<int> data = d;
+    if(clickData == "left")
+    {
+        //qDebug()<< "left button clicked " ;
+        //qDebug() << "x->" << data[0] << "y->" << data[1];
+        mouseDrag = true;
+        x_left_start = d[0];
+        y_left_start = d[1];
+    }
+//    else if (clickData == "right")
+//    {
+//        //qDebug()<<"right button clicked " ;
+//        //qDebug() << "x->" << data[0] << "y->" << data[1];
+//    }
+}
+
+void settings_main::mouseMoveOnAuxCam(vector<int> &d)
+{
+
+    //  code to draw the bounding rectangle
+    if(mouseDrag && ui->radioBoundingBox->isChecked() && ui->radioBoundingBox->isEnabled())
+    {
+        boundingRectangle = QRect(x_left_start, y_left_start, d[0]-x_left_start, d[1]-y_left_start);
+        //scene_aux->clear();
+        //scene_aux->addPixmap(QPixmap::fromImage(AuxImg));
+        scene_aux->addRect(boundingRectangle,QPen(QColor(255, 0,0)));
+        //scene_aux->update();
+        //ui->view_aux->show();
+    }
+
+    //qDebug() << "x->" << data[0] << "y->" << data[1];
+    // draw rectangle on the scene;
+}
+
+void settings_main::mouseReleaseOnAuxCam(vector<int> &d)
+{
+    mouseDrag = false;
+    //vector<int> data = d;
+    //qDebug()<<"Mouse release event" ;
+    //qDebug() << "x->" << data[0] << "y->" << data[1];
 }
 
 void settings_main::clearUI()
@@ -73,6 +127,7 @@ bool settings_main::initialSetup()
         qRegisterMetaType< myMat>("const myMat &");
         connect(mTest_USB, SIGNAL(sendtoUI(const myMat &)), this, SLOT(updatelblEndo(const myMat &)), Qt::QueuedConnection);
         thread_endo->start();
+
         usleep(10000);
         mTest_USB->m_start = true;
         ui->pbPractice->setEnabled(true);
@@ -172,17 +227,46 @@ bool settings_main::initialSetup()
 }
 
 
+void settings_main::keyPressEvent(QKeyEvent* event)
+{
+    QString key =  event->text();
+    if(key == "\r" && !mouseDrag && ui->radioBoundingBox->isChecked() && ui->radioBoundingBox->isEnabled() && boundingRectangle.x() != -1)
+    {
+        //scene_aux->clear();
+        scene_aux->addPixmap(QPixmap::fromImage(AuxImg));
+        ui->view_aux->show();
+    }
+    else
+    {
+        //qDebug() << "Any other key is pressed \n";
+    }
+
+}
+
 void settings_main::updatelblAux(const myMat &lblImg)
 {
-    cvtColor(lblImg, AuxImg, CV_BGR2RGB);
+    //cvtColor(lblImg, AuxImg, CV_BGR2RGB);
     cv::resize(lblImg, img3u_disp, img3u_disp.size());
-    QImage qimg((uchar*)img3u_disp.data, 350, 280, img3u_disp.step, QImage::Format_RGB888);
+    AuxImg =  QImage((uchar*)img3u_disp.data, 350, 280, img3u_disp.step, QImage::Format_RGB888);
+    //qDebug() << "bounding rectangle" << boundingRectangle;
+    scene_aux->clear();
+    scene_aux->addPixmap(QPixmap::fromImage(AuxImg));
     if(thread_aux->isRunning())
     {
         if(ui->tabWidget->currentIndex() == 0)
-            ui->label_aux->setPixmap(QPixmap::fromImage(qimg));
-        if(ui->tabWidget->currentIndex() == 1)
-            ui->label_aux_2->setPixmap(QPixmap::fromImage(qimg));
+        {
+
+            //ui->label_aux->setPixmap(QPixmap::fromImage(qimg));
+            ui->view_aux->setScene(scene_aux);
+            ui->view_aux->show();
+        }
+        else if(ui->tabWidget->currentIndex() == 1)\
+        {
+            //ui->label_aux_2->setPixmap(QPixmap::fromImage(qimg));
+            ui->view_aux_2->setScene(scene_aux);
+            ui->view_aux_2->show();
+        }
+
     }
 }
 
@@ -191,14 +275,29 @@ void settings_main::updatelblEndo(const myMat &lblImg)
     cvtColor(lblImg, EndoImg, CV_BGR2RGB);
     cv::resize(EndoImg, img3u_disp, img3u_disp.size());
     QImage qimg((uchar*)img3u_disp.data, 350, 280, img3u_disp.step, QImage::Format_RGB888);
+
+    scene_endo->addPixmap(QPixmap::fromImage(qimg));
     if(thread_endo->isRunning())
     {
         if(ui->tabWidget->currentIndex() == 0)
-            ui->label_endo->setPixmap(QPixmap::fromImage(qimg));
-        if(ui->tabWidget->currentIndex() == 1)
-            ui->label_endo_2->setPixmap(QPixmap::fromImage(qimg));
-        if(ui->tabWidget->currentIndex() == 2)
-            ui->label_endo_3->setPixmap(QPixmap::fromImage(qimg));
+        {
+            //ui->label_endo->setPixmap(QPixmap::fromImage(qimg));
+            ui->view_endo->setScene(scene_endo);
+            ui->view_endo->show();
+        }
+        else if(ui->tabWidget->currentIndex() == 1)
+        {
+            //ui->label_endo_2->setPixmap(QPixmap::fromImage(qimg));
+            ui->view_endo_2->setScene(scene_endo);
+            ui->view_endo_2->show();
+        }
+        else if(ui->tabWidget->currentIndex() == 2)
+        {
+            //ui->label_endo_3->setPixmap(QPixmap::fromImage(qimg));
+            ui->view_endo_3->setScene(scene_endo);
+            ui->view_endo_3->show();
+        }
+
     }
 }
 
@@ -454,7 +553,8 @@ settings_main::~settings_main()
     // ""
     cout << "Destructor Triggered \n";
     cleanup();
-    delete gui;
+    delete scene_aux ;
+    delete scene_endo ;
     delete ui;
 }
 
@@ -489,6 +589,7 @@ void settings_main::on_checkCalib_clicked(bool checked)
     if(checked)
     {
         mTest_Basler->m_pause = true;
+        usleep(100000);
         ui->radioPegSegment->setEnabled(true);
         ui->radioBoundingBox->setEnabled(true);
         //ui->radioPegSegment->setPalette(*palette1);
@@ -556,39 +657,40 @@ void settings_main::on_checkBox_3_clicked(bool checked)
 void settings_main::on_radioBoundingBox_clicked(bool checked)
 {
     // code to get the bounding box of the working area
-    qDebug() << "done 1";
-    cv::Mat img1;
+//    qDebug() << "done 1";
+//    cv::Mat img1;
 
-    cv::resize(AuxImg, img1, Size(750, 600));
-    qDebug() << "done 2";
-    IplImage* img = cvCreateImage(cvSize(img1.cols,img1.rows),8,3);
-    IplImage ipltemp = img1;
-    cvCopy(&ipltemp,img);
-    qDebug() << "done 3";
-    IplImage* im1 = cvCloneImage(img);
-    string message = "Press Enter to confirm the bounding box or any other key to redraw the bounding box";
-    cvRectangle(im1, pegGroupROI.tl(), pegGroupROI.br(), CV_RGB(255, 0, 0), 3);
-    CvFont font1;
-    cvInitFont(&font1, CV_FONT_HERSHEY_SIMPLEX, 0.5, 0.5, 0, 1, 8);
-    cvPutText(im1, message.c_str(), cvPoint(0, 60), &font1, cvScalar(255, 255, 0));
-    qDebug() << "done 4";
-    gui->showImage(im1);
-    waitKey(0);
-    qDebug() << "done 5";
-    char key1 = cin.get();
-    qDebug() << static_cast<int>(key1);
-    if ((key1 != '\r' || key1 != '\n'))
-    {
-        CvRect box;
-        IplImage* im2 = cvCloneImage(img);
-        string message = "Draw a bounding box around the pegs and press enter";
-        if (getBBFromUser(im2, box, gui, message) == PROGRAM_EXIT)
-        {
-            return;
-        }
-        qDebug() << "done 4";
-        pegGroupROI = Rect(box);
-        cvReleaseImage(&im2);
-    }
-    cvReleaseImage(&im1);
+//    cv::resize(AuxImg, img1, Size(750, 600));
+//    qDebug() << "done 2";
+//    IplImage* img = cvCreateImage(cvSize(img1.cols,img1.rows),8,3);
+//    IplImage ipltemp = img1;
+//    cvCopy(&ipltemp,img);
+//    qDebug() << "done 3";
+//    IplImage* im1 = cvCloneImage(img);
+//    string message = "Press Enter to confirm the bounding box or any other key to redraw the bounding box";
+//    cvRectangle(im1, pegGroupROI.tl(), pegGroupROI.br(), CV_RGB(255, 0, 0), 3);
+//    CvFont font1;
+//    cvInitFont(&font1, CV_FONT_HERSHEY_SIMPLEX, 0.5, 0.5, 0, 1, 8);
+//    cvPutText(im1, message.c_str(), cvPoint(0, 60), &font1, cvScalar(255, 255, 0));
+//    qDebug() << "done 4";
+//    gui->showImage(im1);
+//    waitKey(0);
+//    qDebug() << "done 5";
+//    char key1 = cin.get();
+//    qDebug() << static_cast<int>(key1);
+//    if ((key1 != '\r' || key1 != '\n'))
+//    {
+//        CvRect box;
+//        IplImage* im2 = cvCloneImage(img);
+//        string message = "Draw a bounding box around the pegs and press enter";
+//        if (getBBFromUser(im2, box, gui, message) == PROGRAM_EXIT)
+//        {
+//            return;
+//        }
+//        qDebug() << "done 4";
+//        pegGroupROI = Rect(box);
+//        cvReleaseImage(&im2);
+//    }
+//    cvReleaseImage(&im1);
 }
+

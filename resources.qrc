@@ -11,6 +11,19 @@
         <file>StartT.png</file>
         <file>StopT.png</file>
         <file>Refresh.png</file>
+        <file>endo-calib_0.png</file>
+        <file>endo-calib_1.png</file>
+        <file>endo-calib_2.png</file>
+        <file>endo-calib_3.png</file>
+        <file>endo-calib_4.png</file>
+        <file>endo-calib_5.png</file>
+        <file>endo-calib_6.png</file>
+        <file>endo-calib_7.png</file>
+        <file>endo-calib_8.png</file>
+        <file>endo-calib_9.png</file>
+        <file>endo-calib_10.png</file>
+        <file>endo-calib_11.png</file>
+        <file>endo-calib_12.png</file>
     </qresource>
     <qresource prefix="/">
         <file>Refresh.png</file>

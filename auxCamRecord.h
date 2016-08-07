@@ -27,6 +27,7 @@ using namespace std;
 using namespace Pylon;
 using namespace Basler_GigECameraParams;
 using namespace cv;
+typedef cv::Mat myMat;
 typedef Pylon::CBaslerGigEInstantCamera Camera_t;
 
 
@@ -47,6 +48,7 @@ public:
 
 signals:
      void finished();
+     void sendtoUI(const myMat &);
 
 public slots:
      // Event loop function

@@ -85,6 +85,7 @@ background-color: rgb(12, 7, 7);</string>
    <addaction name="separator"/>
    <addaction name="actionQuit"/>
    <addaction name="separator"/>
+   <addaction name="actionSwitch_Camera"/>
   </widget>
   <widget class="QStatusBar" name="statusBar">
    <property name="styleSheet">
@@ -247,6 +248,23 @@ color: rgb(255, 255, 255);</string>
    </property>
    <property name="toolTip">
     <string>Horizontal Mirror</string>
+   </property>
+  </action>
+  <action name="actionSwitch_Camera">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Switch Camera</string>
+   </property>
+   <property name="toolTip">
+    <string>Switch to auxilarry camera</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
   </action>
  </widget>

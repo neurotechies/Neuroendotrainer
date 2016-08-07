@@ -141,9 +141,18 @@ void auxCamRecord_producer::abort()
 void auxCamRecord_producer::processFrame(const cv::Mat &current_frame)
 {
     // process the current frame; Entry point for the online evaluation for the auxiliary camera.
+    Mat hsv, threshold, tooltip;
+    // track the position of the tool tip
     if(m_eval)
     {
-
+        cvtColor(current_frame, hsv, CV_BGR2HSV);
+        inRange(hsv, cv::Scalar(50, 130, 100), cv::Scalar(70, 255, 255), threshold);
+        erode(threshold, tooltip, Mat(), Point(-1, -1), 2, 1, 1);
+        dilate(tooltip, tooltip, Mat(), Point(-1, -1), 2, 1, 1);
+        // find the contours ; find which is tool ; when confirmed store the location;
+        // update the search window
+        // emit sendtoUI(tooltip);
+        // usleep(10);
     }
 }
 
@@ -192,6 +201,8 @@ void auxCamRecord_producer::process()
                     //cout << "conversion complete\n";
                     //std::copy ( temp_rgb.begin(), temp_rgb.begin() + (size_1_rgb), vec_frame_ax_rgb.begin() + ((i) * (size_1_rgb)));
                     vec_frame_ax_rgb[i] = img3u;
+                    emit sendtoUI(img3u);
+                    usleep(10);
                     processFrame(img3u);
                 }
                 else

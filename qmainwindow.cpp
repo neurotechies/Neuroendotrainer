@@ -22,7 +22,7 @@ qMainWindow::qMainWindow(/*settings_main &obj, */const params &par, string type,
     // set up the camera and start streaming on the central widget
     mFlipVert=true;
     mFlipHoriz=false;
-
+    switchCam = true;
 
     if(type == "practice")
     {
@@ -46,6 +46,7 @@ qMainWindow::qMainWindow(/*settings_main &obj, */const params &par, string type,
         }        
         mThread_endo_producer->start();
         ui->statusBar->showMessage("Practice session has started. Follow the Red LED to put the ring. Press exit to return to main menu");
+        ui->actionSwitch_Camera->setEnabled(false);
     }
     if(type == "record" || type == "online" )
     {
@@ -83,8 +84,8 @@ qMainWindow::qMainWindow(/*settings_main &obj, */const params &par, string type,
 
 
         qRegisterMetaType< myMat>("const myMat &");
-        connect(mProducer_endo, SIGNAL(sendtoUI(const myMat &)), this, SLOT(updateScreen(const myMat &)), Qt::QueuedConnection);
-
+        connect(mProducer_endo, SIGNAL(sendtoUI(const myMat &)), this, SLOT(updateScreen_endo(const myMat &)), Qt::QueuedConnection);
+        connect(mProducer_aux, SIGNAL(sendtoUI(const myMat &)), this, SLOT(updateScreen_aux(const myMat &)), Qt::QueuedConnection);
 
 
         bool success = mProducer_endo->initialize(param);
@@ -120,17 +121,35 @@ qMainWindow::qMainWindow(/*settings_main &obj, */const params &par, string type,
 
 }
 
-void qMainWindow::updateScreen(const myMat &image)
+void qMainWindow::updateScreen_endo(const myMat &image)
 {
-    if( mFlipVert && mFlipHoriz )
-        cv::flip( image,image, -1);
-    else if( mFlipVert )
-        cv::flip( image,image, 0);
-    else if( mFlipHoriz )
-        cv::flip( image,image, 1);
+    if(!switchCam)
+    {
+        if( mFlipVert && mFlipHoriz )
+            cv::flip( image,image, -1);
+        else if( mFlipVert )
+            cv::flip( image,image, 0);
+        else if( mFlipHoriz )
+            cv::flip( image,image, 1);
 
-    ui->openCVviewer->showImage( image );
+        ui->openCVviewer->showImage( image );
+    }
 
+}
+void qMainWindow::updateScreen_aux(const myMat &image)
+{
+    if(switchCam)
+    {
+        if( mFlipVert && mFlipHoriz )
+            cv::flip( image,image, -1);
+        else if( mFlipVert )
+            cv::flip( image,image, 0);
+        else if( mFlipHoriz )
+            cv::flip( image,image, 1);
+
+        ui->openCVviewer->showImage( image );
+
+    }
 }
 
 void qMainWindow::cleanup()
@@ -153,8 +172,6 @@ void qMainWindow::cleanup()
         {
             delete mProducer_endo; mProducer_endo = NULL;
         }
-
-
         if(mThread_endo_consumer->isRunning())
             mThread_endo_consumer->quit();
         if(mConsumer_endo)
@@ -259,12 +276,12 @@ void qMainWindow::on_actionStop_2_triggered()
 {
     if(type == "practice")
     {
-        cout << "actionexit in pracrice \n";
+        cout << "action exit in pracrice \n";
         mProducer_endo->abort();
     }
     else if(type == "record")
     {
-        cout << "actionexit in record \n";
+        cout << "action exit in record \n";
         mProducer_endo->abort();
         mConsumer_endo->abort();
         mProducer_aux->abort();
@@ -283,4 +300,9 @@ void qMainWindow::on_actionStop_2_triggered()
     usleep(1000000);
     ui->actionStart_Activity->setEnabled(false);
     ui->actionQuit->setEnabled(true);
+}
+
+void qMainWindow::on_actionSwitch_Camera_toggled(bool arg1)
+{
+    switchCam = arg1;
 }

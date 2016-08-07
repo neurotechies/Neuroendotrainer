@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui multimedia multimediawidgets opengl
+QT       += core gui multimedia multimediawidgets opengl serialport widgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -25,9 +25,8 @@ SOURCES += main.cpp\
     usbcamrecorddisp.cpp \
     auxCamRecord.cpp \
     params.cpp \
-    serialcomm.cpp \
     Scorer.cpp \
-    Gui.cpp
+    auxcamgraphicsview.cpp
 
 HEADERS  += qmainwindow.h \
     settings_main.h \
@@ -41,9 +40,8 @@ HEADERS  += qmainwindow.h \
     usbcamrecorddisp.h \
     auxCamRecord.h \
     params.h \
-    serialcomm.h \
     Scorer.h \
-    Gui.h
+    auxcamgraphicsview.h
 
 FORMS    += qmainwindow.ui \
     settings_main.ui \
