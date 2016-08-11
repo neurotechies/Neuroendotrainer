@@ -61,9 +61,9 @@ SOURCES       = main.cpp \
 		usbcamrecorddisp.cpp \
 		auxCamRecord.cpp \
 		params.cpp \
-		Scorer.cpp \
 		auxcamgraphicsview.cpp \
-		timeClass.cpp qrc_resources.cpp \
+		timeClass.cpp \
+		Scorer.cpp qrc_resources.cpp \
 		moc_qmainwindow.cpp \
 		moc_settings_main.cpp \
 		moc_settings.cpp \
@@ -87,9 +87,9 @@ OBJECTS       = main.o \
 		usbcamrecorddisp.o \
 		auxCamRecord.o \
 		params.o \
-		Scorer.o \
 		auxcamgraphicsview.o \
 		timeClass.o \
+		Scorer.o \
 		qrc_resources.o \
 		moc_qmainwindow.o \
 		moc_settings_main.o \
@@ -247,9 +247,9 @@ DIST          = ../../Qt5.5.1/5.5/gcc_64/mkspecs/features/spec_pre.prf \
 		usbcamrecorddisp.h \
 		auxCamRecord.h \
 		params.h \
-		Scorer.h \
 		auxcamgraphicsview.h \
-		timeClass.h main.cpp \
+		timeClass.h \
+		Scorer.h main.cpp \
 		qmainwindow.cpp \
 		settings_main.cpp \
 		settings.cpp \
@@ -262,9 +262,9 @@ DIST          = ../../Qt5.5.1/5.5/gcc_64/mkspecs/features/spec_pre.prf \
 		usbcamrecorddisp.cpp \
 		auxCamRecord.cpp \
 		params.cpp \
-		Scorer.cpp \
 		auxcamgraphicsview.cpp \
-		timeClass.cpp
+		timeClass.cpp \
+		Scorer.cpp
 QMAKE_TARGET  = Neuro-Endo-Trainer
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = Neuro-Endo-Trainer
@@ -599,8 +599,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents resources.qrc $(DISTDIR)/
-	$(COPY_FILE) --parents qmainwindow.h settings_main.h settings.h testBasler.h testIDS.h testUSB.h qtopencvviewergl.h buf_aux.h buf_endo.h usbcamrecorddisp.h auxCamRecord.h params.h Scorer.h auxcamgraphicsview.h timeClass.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp qmainwindow.cpp settings_main.cpp settings.cpp testBasler.cpp testIDS.cpp testUSB.cpp qtopencvviewergl.cpp buf_aux.cpp buf_endo.cpp usbcamrecorddisp.cpp auxCamRecord.cpp params.cpp Scorer.cpp auxcamgraphicsview.cpp timeClass.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents qmainwindow.h settings_main.h settings.h testBasler.h testIDS.h testUSB.h qtopencvviewergl.h buf_aux.h buf_endo.h usbcamrecorddisp.h auxCamRecord.h params.h auxcamgraphicsview.h timeClass.h Scorer.h $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp qmainwindow.cpp settings_main.cpp settings.cpp testBasler.cpp testIDS.cpp testUSB.cpp qtopencvviewergl.cpp buf_aux.cpp buf_endo.cpp usbcamrecorddisp.cpp auxCamRecord.cpp params.cpp auxcamgraphicsview.cpp timeClass.cpp Scorer.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents qmainwindow.ui settings_main.ui settings.ui $(DISTDIR)/
 
 
@@ -7326,9 +7326,6 @@ params.o: params.cpp params.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialportglobal.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o params.o params.cpp
 
-Scorer.o: Scorer.cpp Scorer.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Scorer.o Scorer.cpp
-
 auxcamgraphicsview.o: auxcamgraphicsview.cpp auxcamgraphicsview.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/QWidget \
 		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/qwidget.h \
@@ -7454,6 +7451,9 @@ auxcamgraphicsview.o: auxcamgraphicsview.cpp auxcamgraphicsview.h \
 
 timeClass.o: timeClass.cpp timeClass.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o timeClass.o timeClass.cpp
+
+Scorer.o: Scorer.cpp Scorer.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Scorer.o Scorer.cpp
 
 qrc_resources.o: qrc_resources.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_resources.o qrc_resources.cpp

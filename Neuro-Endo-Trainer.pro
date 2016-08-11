@@ -26,9 +26,9 @@ SOURCES += main.cpp\
     usbcamrecorddisp.cpp \
     auxCamRecord.cpp \
     params.cpp \
-    Scorer.cpp \
     auxcamgraphicsview.cpp \
-    timeClass.cpp
+    timeClass.cpp \
+    Scorer.cpp
 
 HEADERS  += qmainwindow.h \
     settings_main.h \
@@ -42,9 +42,9 @@ HEADERS  += qmainwindow.h \
     usbcamrecorddisp.h \
     auxCamRecord.h \
     params.h \
-    Scorer.h \
     auxcamgraphicsview.h \
-    timeClass.h
+    timeClass.h \
+    Scorer.h
 
 FORMS    += qmainwindow.ui \
     settings_main.ui \

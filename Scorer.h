@@ -3,93 +3,111 @@
 
 #include <vector>
 #include <string>
+#include <iostream>
 using namespace std;
+#define HITTING_THRESHOLD_SENSOR1 10
+#define HITTING_THRESHOLD_SENSOR2 10
+
 
 struct Activity
 {
 	// struct definitions
 	struct stationary
 	{
-		int startFrame, endFrame;
-		vector<pair<int, int> > hitting;
-		vector<pair<int, pair<double, double> > > trackingData;
-		vector<int> framesForTrackingFailure;
-		vector<int> framesForTrackingReinit;
-		vector<int> framesForRingHitting;
+        int startIndex, endIndex;
+        string startTime, endTime;  // Time of starting and ending of the activity
+        vector<pair<string, pair<int, int> > > hitting; // Hitting values in these times
+        vector<pair<string, pair<double, double> > > trackingData; // Tracking Data in the stationary activity
+        //vector<int> framesForTrackingFailure;
+        //vector<int> framesForTrackingReinit;
+        //vector<int> framesForRingHitting;
 		stationary()
 		{
-			startFrame = -1;
-			endFrame = -1;
+            startIndex = -1;
+            endIndex = -1;
+            startTime = "";
+            endTime = "";
 		}
 		void clear()
 		{
-			startFrame = -1;
-			endFrame = -1;
+            startIndex = -1;
+            endIndex = -1;
+            startTime = "";
+            endTime = "";
 			hitting.clear();
 			trackingData.clear();
-			framesForTrackingFailure.clear();
-			framesForRingHitting.clear();
-			framesForTrackingReinit.clear();
+            //framesForTrackingFailure.clear();
+            //framesForRingHitting.clear();
+            //framesForTrackingReinit.clear();
 		}
 	};
 	struct Picking
 	{
-		int startFrame, endFrame;
+        int startIndex, endIndex;
+        string startTime, endTime;
 		int from_peg;
-		vector<pair<int, int> > hitting;
-		vector<pair<int, pair<double, double> > > trackingData;
-		vector<int> framesForTrackingFailure;
-		vector<int> framesForRingHitting;
-		vector<int> framesForTrackingReinit;
+        vector<pair<string, pair<int, int> > > hitting;
+        vector<pair<string, pair<double, double> > > trackingData;
+        //vector<int> framesForTrackingFailure;
+        //vector<int> framesForRingHitting;
+        //vector<int> framesForTrackingReinit;
 		Picking()
 		{
-			startFrame = 0;
-			endFrame = 0;
-			from_peg = 0;
+            startIndex = -1;
+            endIndex = -1;
+            startTime = "";
+            endTime = "";
+            from_peg = -1;
 		}
 		void clear()
 		{
-			startFrame = 0;
-			endFrame = 0;
-			from_peg = 0;
+            startIndex = -1;
+            endIndex = -1;
+            startTime = "";
+            endTime = "";
+            from_peg = -1;
 			hitting.clear();
 			trackingData.clear();
-			framesForTrackingFailure.clear();
-			framesForRingHitting.clear();
-			framesForTrackingReinit.clear();
+            //framesForTrackingFailure.clear();
+            //framesForRingHitting.clear();
+            //framesForTrackingReinit.clear();
 		}
 	};
 	struct Moving
 	{
-		int startFrame, endFrame, from_peg, to_peg;
-		vector<pair<int, int> > hitting;
-		vector<pair<int, pair<double, double> > > trackingData;
-		vector<int> framesForTrackingFailure;
-		vector<int> framesForRingHitting;
-		vector<int> framesForTrackingReinit;
+        int startIndex, endIndex;
+        string startTime, endTime;
+        int from_peg, to_peg;
+        vector<pair<string, pair<int, int> > > hitting;
+        vector<pair<string, pair<double, double> > > trackingData;
+        //vector<int> framesForTrackingFailure;
+        //vector<int> framesForRingHitting;
+        //vector<int> framesForTrackingReinit;
 		Moving()
 		{
-			startFrame = 0;
-			endFrame = 0;
-			from_peg = 0;
-			to_peg = 0;
+            startIndex = -1;
+            endIndex = -1;
+            startTime = "";
+            endTime = "";
+            from_peg = -1;
+            to_peg = -1;
 		}
 		void clear()
 		{
-			startFrame = 0;
-			endFrame = 0;
-			from_peg = 0;
-			to_peg = 0;
+            startIndex = -1;
+            endIndex = -1;
+            startTime = "";
+            endTime = "";
+            from_peg = -1;
+            to_peg = -1;
 			hitting.clear();
 			trackingData.clear();
-			framesForTrackingFailure.clear();
-			framesForRingHitting.clear();
-			framesForTrackingReinit.clear();
+            //framesForTrackingFailure.clear();
+            //framesForRingHitting.clear();
+            //framesForTrackingReinit.clear();
 		}
 	};
-
 	string  type;
-	int no_of_frames;
 	stationary s;
 	Picking p;
 	Moving m;
@@ -97,18 +115,63 @@ struct Activity
 	Activity()
 	{
 		type = "";
-		no_of_frames = 0;
 	}
 	void clear()
 	{
 		type = "";
-		no_of_frames = 0;
 		s.clear();
 		p.clear();
 		m.clear();
 	}
-};
+    void print()
+    {
+        if(type == "stationary")
+        {
+            cout << "\nActivity -> Stationary\n" << "Start-Time -> " << s.startTime << " End-Time->" << s.endTime << endl;
+            cout << "Hitting Data\n";
+            for(unsigned int i = 0; i <  s.hitting.size(); i++)
+            {
+                cout << "time->" << s.hitting[i].first << "  vals->(" << s.hitting[i].second.first << "," << s.hitting[i].second.second << ")\n";
+            }
+            cout << "Tracking Data\n";
+            for(unsigned int i = 0; i <  s.trackingData.size(); i++)
+            {
+                cout << "time->" << s.trackingData[i].first << "  vals->(" << s.trackingData[i].second.first << "," << s.trackingData[i].second.second << ")\n";
+            }
+        }
+        else if(type == "picking")
+        {
+            cout << "\nActivity -> Picking\n" << "Start-Time -> " << p.startTime << " End-Time->" << p.endTime << endl;
+            cout << "From-Peg -> " << p.from_peg << endl;
+            cout << "Hitting Data\n";
+            for(unsigned int i = 0; i <  p.hitting.size(); i++)
+            {
+                cout << "time->" << p.hitting[i].first << "  vals->(" << p.hitting[i].second.first << "," << p.hitting[i].second.second << ")\n";
+            }
+            cout << "Tracking Data\n";
+            for(unsigned int i = 0; i <  p.trackingData.size(); i++)
+            {
+                cout << "time->" << p.trackingData[i].first << "  vals->(" << p.trackingData[i].second.first << "," << p.trackingData[i].second.second << ")\n";
+            }
 
+        }
+        else if(type == "moving")
+        {
+            cout << "\nActivity -> Moving\n" << "Start-Time -> " << m.startTime << " End-Time->" << m.endTime << endl;
+            cout << "From-Peg-> " << m.from_peg <<  " To-Peg-> " << m.to_peg << endl;
+            cout << "Hitting Data\n";
+            for(unsigned int i = 0; i <  m.hitting.size(); i++)
+            {
+                cout << "time->" << m.hitting[i].first << "  vals->(" << m.hitting[i].second.first << "," << m.hitting[i].second.second << ")\n";
+            }
+            cout << "Tracking Data\n";
+            for(unsigned int i = 0; i <  m.trackingData.size(); i++)
+            {
+                cout << "time->" << m.trackingData[i].first << "  vals->(" << m.trackingData[i].second.first << "," << m.trackingData[i].second.second << ")\n";
+            }
+        }
+    }
+};
 
 struct Result
 {

@@ -19,6 +19,7 @@
 #include <QtSerialPort/QSerialPort>
 #include <QMessageBox>
 #include "Scorer.h"
+#include "timeClass.h"
 
 using namespace std;
 
@@ -71,6 +72,7 @@ private:
     void closeSerialPort();
     void writeData(const QString str);
     const string currentDateTime();
+    void stringToValues(const string &str, pair<int, int> &values, char separator);
 
     Ui::qMainWindow *ui;
     bool mFlipVert;

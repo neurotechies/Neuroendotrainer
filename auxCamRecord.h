@@ -86,7 +86,7 @@ private:
     uint size_1_yuv;                // size of yuv frame (rows*cols*2)
     uint n_channels;                // 3
 
-    vector<pair<string, make_pair<double, double> > > trackingData;
+    vector<pair<string, pair<double, double> > > trackingData;
 
 
 

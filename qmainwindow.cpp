@@ -125,7 +125,22 @@ qMainWindow::qMainWindow(/*settings_main &obj, */const params &par, string type,
     connect(serial, SIGNAL(readChannelFinished()), this, SLOT(readData()));
     openSerialPort();
     start_serial_logging = false;
+}
 
+void qMainWindow::stringToValues(const string &str, pair<int, int> &values, char separator)
+{
+    string s = str.substr(5, str.size()-5);
+    cout << s << endl;
+    std::string::size_type index = s.find(separator);
+    if(index != string::npos)
+    {
+        values.first = std::atoi(s.substr(0, index).c_str());
+        values.second = std::atoi(s.substr(index+1).c_str());
+    }
+    else
+    {
+        values.first = atoi(s.c_str());
+    }
 }
 
 void qMainWindow::processEvaluationData(const vector<pair<string, pair<double, double> > > &trackingDataWithTime)
