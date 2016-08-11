@@ -38,6 +38,7 @@
 #define Keypad_col1 5       //pin 5(A5) of MCP20017  using library Keypad_MC17
 #define Keypad_col2 6       //pin 6(A6) of MCP20017  using library Keypad_MC17
 #define Keypad_col3 7       //pin 7(A7) of MCP20017  using library Keypad_MC17
+#define Thresh_No_Of_Moves 24
 
 int random_index = -1;   // initialize random index
 int old_random_index = -1;
@@ -81,6 +82,7 @@ int Ring9_upperMargin = 20;
 int Ring10_upperMargin = 30;
 int Ring11_upperMargin = 70;
 int Ring12_upperMargin = 25;
+int no_of_moves = 0;
 
 
 
@@ -566,6 +568,323 @@ int muxRead(int whichChannel)
   return val;
 }
 
+void press_forward()
+{
+  // code for the next level
+
+}
+
+void press_backward()
+{
+  // code for the previous level
+}
+
+void press_start()
+{
+  if(no_of_moves == Thresh_No_Of_Moves)
+  {
+    Serial.println("Z");
+    enterStart = false;
+    press_reset();
+  }
+
+  String from = String(old_random_index);
+  String to  = String(random_index);
+
+  String f1 = String(analogRead(forceSensor1), DEC); 
+  String f2 = String(analogRead(forceSensor2), DEC); 
+
+  Serial.print("Ht:");
+  Serial.print(f1);
+  Serial.print("-");
+  Serial.println(f2);
+
+  if(old_random_index == -1)
+  {
+        Serial.print("St:M,");
+        Serial.print(from);
+        Serial.print(",");
+        Serial.println(to);
+  }
+  else
+  {
+    int val1 = muxRead(old_random_index);
+    delay(10);
+    if(old_random_index == 0)
+    {
+      if(val1 > Ring1_false + 10)
+      {
+        Serial.println("St:S");
+      }
+      else
+      {
+        Serial.print("St:M,");
+        Serial.print(from);
+        Serial.print(",");
+        Serial.println(to);
+      }
+    }
+    
+    if(old_random_index == 1)
+    {
+      if(val1 > Ring2_false  + 10)
+      {
+        Serial.println("St:S");
+      }
+      else
+      {
+        Serial.print("St:M,");
+        Serial.print(from);
+        Serial.print(",");
+        Serial.println(to);
+      }
+    }
+    if(old_random_index == 2)
+    {
+      if(val1 > Ring3_false  + 10)
+      {
+        Serial.println("St:S");
+      }
+      else
+      {
+        Serial.print("St:M,");
+        Serial.print(from);
+        Serial.print(",");
+        Serial.println(to);
+      }
+    }
+    if(old_random_index == 3)
+    {
+      if(val1 > Ring4_false  + 10)
+      {
+        Serial.println("St:S");
+      }
+      else
+      {
+        Serial.print("St:M,");
+        Serial.print(from);
+        Serial.print(",");
+        Serial.println(to);
+      }
+    }
+    if(old_random_index == 4)
+    {
+      if(val1 > Ring5_false  + 10)
+      {
+        Serial.println("St:S");
+      }
+      else
+      {
+        Serial.print("St:M,");
+        Serial.print(from);
+        Serial.print(",");
+        Serial.println(to);
+      }
+    }
+    if(old_random_index == 5)
+    {
+      if(val1 > Ring6_false  + 10)
+      {
+        Serial.println("St:S");
+      }
+      else
+      {
+        Serial.print("St:M,");
+        Serial.print(from);
+        Serial.print(",");
+        Serial.println(to);
+      }
+    }
+    if(old_random_index == 6)
+    {
+      if(val1 > Ring7_false  + 10)
+      {
+        Serial.println("St:S");
+      }
+      else
+      {
+        Serial.print("St:M,");
+        Serial.print(from);
+        Serial.print(",");
+        Serial.println(to);
+      }
+    }
+    if(old_random_index == 7)
+    {
+      if(val1 > Ring8_false  + 10)
+      {
+        Serial.println("St:S");
+      }
+      else
+      {
+        Serial.print("St:M,");
+        Serial.print(from);
+        Serial.print(",");
+        Serial.println(to);
+      }
+    }
+    if(old_random_index == 8)
+    {
+      if(val1 > Ring9_false  + 10)
+      {
+        Serial.println("St:S");
+      }
+      else
+      {
+        Serial.print("St:M,");
+        Serial.print(from);
+        Serial.print(",");
+        Serial.println(to);
+      }
+    }
+    if(old_random_index == 9)
+    {
+      if(val1 > Ring10_false  + 10)
+      {
+        Serial.println("St:S");
+      }
+      else
+      {
+        Serial.print("St:M,");
+        Serial.print(from);
+        Serial.print(",");
+        Serial.println(to);
+      }
+    }
+    if(old_random_index == 10)
+    {
+      if(val1 > Ring11_false  + 10)
+      {
+        Serial.println("St:S");
+      }
+      else
+      {
+        Serial.print("St:M,");
+        Serial.print(from);
+        Serial.print(",");
+        Serial.println(to);
+      }
+    }
+    if(old_random_index == 11)
+    {
+      if(val1 > Ring12_false  + 10)
+      {
+        Serial.println("St:S");
+      }
+      else
+      {
+        Serial.print("St:M,");
+        Serial.print(from);
+        Serial.print(",");
+        Serial.println(to);
+      }
+    }  
+  }
+  
+  muxWrite(random_index);
+  delay(10);
+  int val = muxRead(random_index);
+
+  if(random_index == 0 && val > (Ring1_true-Ring1_upperMargin))
+  {
+    Serial.println("St:S");
+    old_random_index = random_index;
+    random_index = random(MaxNo);
+    no_of_moves++; 
+    delay(500);
+  }
+  else if(random_index == 1 && val > (Ring2_true-Ring2_upperMargin))
+  {
+    Serial.println("St:S");
+    old_random_index = random_index;
+    random_index = random(MaxNo); 
+    no_of_moves++; 
+    delay(500);
+  }
+  else if(random_index == 2 && val > (Ring3_true-Ring3_upperMargin))
+  {
+    Serial.println("St:S");
+    old_random_index = random_index;
+    random_index = random(MaxNo); 
+    no_of_moves++; 
+    delay(500);    
+  }
+  else if(random_index == 3 && val > (Ring4_true-Ring4_upperMargin))
+  {
+    Serial.println("St:S");
+    old_random_index = random_index;
+    random_index = random(MaxNo); 
+    no_of_moves++; 
+    delay(500);
+  }
+  else if(random_index == 4 && val > (Ring5_true-Ring5_upperMargin))
+  {
+    Serial.println("St:S");
+    old_random_index = random_index;
+    random_index = random(MaxNo); 
+    no_of_moves++; 
+    delay(500);
+  }
+  else if(random_index == 5 && val > (Ring6_true-Ring6_upperMargin))
+  {
+    Serial.println("St:S");
+    old_random_index = random_index;
+    random_index = random(MaxNo); 
+    no_of_moves++; 
+    delay(500);
+  }
+  else if(random_index == 6 && val > (Ring7_true-Ring7_upperMargin))
+  {
+    Serial.println("St:S");
+    old_random_index = random_index;
+    random_index = random(MaxNo); 
+    no_of_moves++; 
+    delay(500);
+  }
+  else if(random_index == 7 && val > (Ring8_true-Ring8_upperMargin))
+  {
+    Serial.println("St:S");
+    old_random_index = random_index;
+    random_index = random(MaxNo); 
+    no_of_moves++; 
+    delay(500);
+  }
+  else if(random_index == 8 && val > (Ring9_true-Ring9_upperMargin))
+  {
+    Serial.println("St:S");
+    old_random_index = random_index;
+    random_index = random(MaxNo); 
+    no_of_moves++; 
+    delay(500);
+  }
+  else if(random_index == 9 && val > (Ring10_true-Ring10_upperMargin))
+  {
+    Serial.println("St:S");
+    old_random_index = random_index;
+    random_index = random(MaxNo); 
+    no_of_moves++; 
+    delay(2000);
+  }
+  else if(random_index == 10 && val > (Ring11_true-Ring11_upperMargin))
+  {
+    Serial.println("St:S");
+    old_random_index = random_index;
+    random_index = random(MaxNo); 
+    no_of_moves++; 
+    delay(500);
+  }
+  else if(random_index == 11 && val > (Ring12_true-Ring12_upperMargin))
+  {
+    Serial.println("St:S");
+    old_random_index = random_index;
+    random_index = random(MaxNo); 
+    no_of_moves++; 
+    delay(500);
+  }
+  myservo.write(servo_pos);
+  delay(10);
+}
+
 void press_reset()
 {
   lcd.clear();
@@ -592,305 +911,6 @@ void error_keypress()
   keyGet = false;
   keys[0] = '*'; keys[1] = '*'; keys[2] = '*';
   numofKeyPressed = 0;
-}
-
-void press_forward()
-{
-  // code for the next level
-
-}
-
-void press_backward()
-{
-  // code for the previous level
-}
-
-void press_start()
-{
-
-  String from = String(old_random_index);
-  String to  = String(random_index);
-
-  String f1 = String(analogRead(forceSensor1), DEC); 
-  String f2 = String(analogRead(forceSensor2), DEC); 
-
-  Serial.print("Ht:");
-  Serial.print(f1);
-  Serial.print("-");
-  Serial.println(f2);
-
-  if(old_random_index == -1)
-  {
-        Serial.print("St:M,");
-        Serial.print(from);
-        Serial.print("-");
-        Serial.println(to);
-  }
-  else
-  {
-    int val1 = muxRead(old_random_index);
-    delay(10);
-    if(old_random_index == 0)
-    {
-      if(val1 > Ring1_false + 10)
-      {
-        Serial.println("St:S");
-      }
-      else
-      {
-        Serial.print("St:M,");
-        Serial.print(from);
-        Serial.print("-");
-        Serial.println(to);
-      }
-    }
-    
-    if(old_random_index == 1)
-    {
-      if(val1 > Ring2_false  + 10)
-      {
-        Serial.println("St:S");
-      }
-      else
-      {
-        Serial.print("St:M,");
-        Serial.print(from);
-        Serial.print("-");
-        Serial.println(to);
-      }
-    }
-    if(old_random_index == 2)
-    {
-      if(val1 > Ring3_false  + 10)
-      {
-        Serial.println("St:S");
-      }
-      else
-      {
-        Serial.print("St:M,");
-        Serial.print(from);
-        Serial.print("-");
-        Serial.println(to);
-      }
-    }
-    if(old_random_index == 3)
-    {
-      if(val1 > Ring4_false  + 10)
-      {
-        Serial.println("St:S");
-      }
-      else
-      {
-        Serial.print("St:M,");
-        Serial.print(from);
-        Serial.print("-");
-        Serial.println(to);
-      }
-    }
-    if(old_random_index == 4)
-    {
-      if(val1 > Ring5_false  + 10)
-      {
-        Serial.println("St:S");
-      }
-      else
-      {
-        Serial.print("St:M,");
-        Serial.print(from);
-        Serial.print("-");
-        Serial.println(to);
-      }
-    }
-    if(old_random_index == 5)
-    {
-      if(val1 > Ring6_false  + 10)
-      {
-        Serial.println("St:S");
-      }
-      else
-      {
-        Serial.print("St:M,");
-        Serial.print(from);
-        Serial.print("-");
-        Serial.println(to);
-      }
-    }
-    if(old_random_index == 6)
-    {
-      if(val1 > Ring7_false  + 10)
-      {
-        Serial.println("St:S");
-      }
-      else
-      {
-        Serial.print("St:M,");
-        Serial.print(from);
-        Serial.print("-");
-        Serial.println(to);
-      }
-    }
-    if(old_random_index == 7)
-    {
-      if(val1 > Ring8_false  + 10)
-      {
-        Serial.println("St:S");
-      }
-      else
-      {
-        Serial.print("St:M,");
-        Serial.print(from);
-        Serial.print("-");
-        Serial.println(to);
-      }
-    }
-    if(old_random_index == 8)
-    {
-      if(val1 > Ring9_false  + 10)
-      {
-        Serial.println("St:S");
-      }
-      else
-      {
-        Serial.print("St:M,");
-        Serial.print(from);
-        Serial.print("-");
-        Serial.println(to);
-      }
-    }
-    if(old_random_index == 9)
-    {
-      if(val1 > Ring10_false  + 10)
-      {
-        Serial.println("St:S");
-      }
-      else
-      {
-        Serial.print("St:M,");
-        Serial.print(from);
-        Serial.print("-");
-        Serial.println(to);
-      }
-    }
-    if(old_random_index == 10)
-    {
-      if(val1 > Ring11_false  + 10)
-      {
-        Serial.println("St:S");
-      }
-      else
-      {
-        Serial.print("St:M,");
-        Serial.print(from);
-        Serial.print("-");
-        Serial.println(to);
-      }
-    }
-    if(old_random_index == 11)
-    {
-      if(val1 > Ring12_false  + 10)
-      {
-        Serial.println("St:S");
-      }
-      else
-      {
-        Serial.print("St:M,");
-        Serial.print(from);
-        Serial.print("-");
-        Serial.println(to);
-      }
-    }  
-  }
-  
-  muxWrite(random_index);
-  delay(10);
-  int val = muxRead(random_index);
-
-  if(random_index == 0 && val > (Ring1_true-Ring1_upperMargin))
-  {
-    Serial.println("St:S");
-    old_random_index = random_index;
-    random_index = random(MaxNo); 
-    delay(500);
-  }
-  else if(random_index == 1 && val > (Ring2_true-Ring2_upperMargin))
-  {
-    Serial.println("St:S");
-    old_random_index = random_index;
-    random_index = random(MaxNo); 
-    delay(500);
-  }
-  else if(random_index == 2 && val > (Ring3_true-Ring3_upperMargin))
-  {
-    Serial.println("St:S");
-    old_random_index = random_index;
-    random_index = random(MaxNo); 
-    delay(500);    
-  }
-  else if(random_index == 3 && val > (Ring4_true-Ring4_upperMargin))
-  {
-    Serial.println("St:S");
-    old_random_index = random_index;
-    random_index = random(MaxNo); 
-    delay(500);
-  }
-  else if(random_index == 4 && val > (Ring5_true-Ring5_upperMargin))
-  {
-    Serial.println("St:S");
-    old_random_index = random_index;
-    random_index = random(MaxNo); 
-    delay(500);
-  }
-  else if(random_index == 5 && val > (Ring6_true-Ring6_upperMargin))
-  {
-    Serial.println("St:S");
-    old_random_index = random_index;
-    random_index = random(MaxNo); 
-    delay(500);
-  }
-  else if(random_index == 6 && val > (Ring7_true-Ring7_upperMargin))
-  {
-    Serial.println("St:S");
-    old_random_index = random_index;
-    random_index = random(MaxNo); 
-    delay(500);
-  }
-  else if(random_index == 7 && val > (Ring8_true-Ring8_upperMargin))
-  {
-    Serial.println("St:S");
-    old_random_index = random_index;
-    random_index = random(MaxNo); 
-    delay(500);
-  }
-  else if(random_index == 8 && val > (Ring9_true-Ring9_upperMargin))
-  {
-    Serial.println("St:S");
-    old_random_index = random_index;
-    random_index = random(MaxNo); 
-    delay(500);
-  }
-  else if(random_index == 9 && val > (Ring10_true-Ring10_upperMargin))
-  {
-    Serial.println("St:S");
-    old_random_index = random_index;
-    random_index = random(MaxNo); 
-    delay(2000);
-  }
-  else if(random_index == 10 && val > (Ring11_true-Ring11_upperMargin))
-  {
-    Serial.println("St:S");
-    old_random_index = random_index;
-    random_index = random(MaxNo); 
-    delay(500);
-  }
-  else if(random_index == 11 && val > (Ring12_true-Ring12_upperMargin))
-  {
-    Serial.println("St:S");
-    old_random_index = random_index;
-    random_index = random(MaxNo); 
-    delay(500);
-  }
-  myservo.write(servo_pos);
-  delay(10);
 }
 
 

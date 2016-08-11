@@ -178,7 +178,7 @@ color: rgb(255, 255, 255);</string>
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>Stop</string>
+    <string>Stop/ShowResults</string>
    </property>
    <property name="toolTip">
     <string>Stop Activity</string>

@@ -21,6 +21,7 @@
 #include <stdexcept>
 #include <time.h>
 #include "/usr/include/ueye.h"
+#include <QDebug>
 #include "params.h"
 
 using namespace std;
@@ -29,7 +30,7 @@ using namespace Basler_GigECameraParams;
 using namespace cv;
 typedef cv::Mat myMat;
 typedef Pylon::CBaslerGigEInstantCamera Camera_t;
-
+#define TRACKING_BLOB_THRESH 10
 
 class auxCamRecord_producer:public QObject
 {
@@ -42,6 +43,7 @@ public:
     void abort();
     void processFrame(const cv::Mat &current_frame);
     const string currentDateTime();
+     bool sendFrame;
 
     // dtor
     ~auxCamRecord_producer();
@@ -49,6 +51,7 @@ public:
 signals:
      void finished();
      void sendtoUI(const myMat &);
+     void sendEvalData(const vector<pair<string, pair<double, double> > > &);
 
 public slots:
      // Event loop function
@@ -82,6 +85,10 @@ private:
     uint size_1_rgb;                // size of rgb frame (rows*cols*3)
     uint size_1_yuv;                // size of yuv frame (rows*cols*2)
     uint n_channels;                // 3
+
+    vector<pair<string, make_pair<double, double> > > trackingData;
+
+
 
 };
 

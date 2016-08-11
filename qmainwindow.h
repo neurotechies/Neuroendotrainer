@@ -16,6 +16,9 @@
 #include <vector>
 #include "params.h"
 #include "settings_main.h"
+#include <QtSerialPort/QSerialPort>
+#include <QMessageBox>
+#include "Scorer.h"
 
 using namespace std;
 
@@ -43,8 +46,7 @@ private slots:
 
     void on_action_Horizontal_Flip_triggered(bool checked);
 
-    void updateScreen_endo(const myMat &);
-    void updateScreen_aux(const myMat &);
+    void updateScreen(const myMat &);
 
     void on_actionQuit_triggered();
 
@@ -52,12 +54,23 @@ private slots:
 
     void on_actionSwitch_Camera_toggled(bool arg1);
 
+    void readData();
+
+    void handleError(QSerialPort::SerialPortError error);
+
+    void processEvaluationData(const vector<pair<string, pair<double, double> > > &);
+
+
 signals:
 //    void ReinitializeSettings_Main();
 
 private:
 
     void cleanup();
+    void openSerialPort();
+    void closeSerialPort();
+    void writeData(const QString str);
+    const string currentDateTime();
 
     Ui::qMainWindow *ui;
     bool mFlipVert;
@@ -86,7 +99,11 @@ private:
     bool RecordOnlineEndo;
     bool RecordOnlineAux;
     bool switchCam;
+    bool start_serial_logging;
+    QSerialPort *serial;
 
+    vector<pair<string, string> > stateAndHittingInfo;
+    vector<Activity> activities;
 
 protected:
     //void timerEvent(QTimerEvent *event);

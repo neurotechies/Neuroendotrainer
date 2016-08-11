@@ -3,6 +3,7 @@
 // producer functions
 usbCamRecordDisp_producer::usbCamRecordDisp_producer()
 {
+    sendFrame = true;
 }
 
 bool usbCamRecordDisp_producer::initialize(const params &par)
@@ -40,13 +41,13 @@ void usbCamRecordDisp_producer::process()
     std::vector<Mat> vec_frame_endo(size_bin_endo);
     while(!m_abort)
     {
-
         // Get the 20 frames
         for (uint i = 0 ; i < size_bin_endo; ++i)
         {
             capture_usb >> vec_frame_endo[i];
             usleep(100);
-            emit sendtoUI(vec_frame_endo[i]);
+            if(sendFrame)
+                emit sendtoUI(vec_frame_endo[i]);
             usleep(10);
         }
         // Lock the Buffer, and produce an item

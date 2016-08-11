@@ -432,8 +432,8 @@ background-color: rgb(27, 27, 44);</string>
       <rect>
        <x>130</x>
        <y>490</y>
-       <width>251</width>
-       <height>20</height>
+       <width>252</width>
+       <height>17</height>
       </rect>
      </property>
      <property name="text">

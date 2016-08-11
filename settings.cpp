@@ -23,13 +23,11 @@ settings::settings(QWidget *parent) :
     ui->dataBitsBox->addItem(QStringLiteral("6"), QSerialPort::Data6);
     ui->dataBitsBox->addItem(QStringLiteral("5"), QSerialPort::Data5);
 
-
     ui->parityBox->addItem(tr("None"), QSerialPort::NoParity);
     ui->parityBox->addItem(tr("Even"), QSerialPort::EvenParity);
     ui->parityBox->addItem(tr("Odd"), QSerialPort::OddParity);
     ui->parityBox->addItem(tr("Mark"), QSerialPort::MarkParity);
     ui->parityBox->addItem(tr("Space"), QSerialPort::SpaceParity);
-
 
     ui->stopBitsBox->addItem(QStringLiteral("1"), QSerialPort::OneStop);
 #ifdef Q_OS_WIN
@@ -68,6 +66,8 @@ settings::settings(QWidget *parent) :
 //    {
 //        cout << "no->" << nos[i] << endl;
 //    }
+
+    updateSettings();
 }
 
 void settings::parseStringtoNumbers(const QString & str1, vector<int> &numbers, int numOfValues)
@@ -92,6 +92,7 @@ settings::~settings()
 {
     closeSerialPort();
     delete ui;
+    delete serial;
 }
 
 void settings::on_buttonBox_accepted()
@@ -112,6 +113,9 @@ void settings::on_buttonBox_accepted()
     par.cap_rowsEndo = ui->cap_rows_endo->text().toUtf8().toUInt();
 
 
+
+
+
     // setting the capture path;
     string input = ui->cap_path->text().toUtf8().constData();
     std::istringstream ss(input);
@@ -120,6 +124,22 @@ void settings::on_buttonBox_accepted()
     {
         par.cap_paths.push_back(token);
     }
+
+    par.serial_name   = serial_settings.name ;
+    par.serial_baudRate =  serial_settings.baudRate;
+    par.serial_stringBaudRate = serial_settings.stringBaudRate;
+
+    par.serial_dataBits = serial_settings.dataBits;
+    par.serial_stringDataBits = serial_settings.stringDataBits ;
+
+    par.serial_parity = serial_settings.parity ;
+    par.serial_stringParity = serial_settings.stringParity ;
+
+    par.serial_stopBits = serial_settings.stopBits ;
+    par.serial_stringStopBits = serial_settings.stringStopBits ;
+
+    par.serial_flowControl = serial_settings.flowControl ;
+    par.serial_stringFlowControl = serial_settings.stringFlowControl ;
 
     emit makeUpdateParams(par);
     closeSerialPort();
@@ -134,29 +154,36 @@ void settings::on_buttonBox_rejected()
 void settings::updateSettings()
 {
     serial_settings.name = ui->serialPortInfoListBox->currentText();
-
-
-    serial_settings.baudRate = static_cast<QSerialPort::BaudRate>(
-                    ui->baudRateBox->itemData(ui->baudRateBox->currentIndex()).toInt());
-
+    serial_settings.baudRate = static_cast<QSerialPort::BaudRate>(ui->baudRateBox->itemData(ui->baudRateBox->currentIndex()).toInt());
     serial_settings.stringBaudRate = QString::number(serial_settings.baudRate);
 
-    serial_settings.dataBits = static_cast<QSerialPort::DataBits>(
-                ui->dataBitsBox->itemData(ui->dataBitsBox->currentIndex()).toInt());
+    serial_settings.dataBits = static_cast<QSerialPort::DataBits>(ui->dataBitsBox->itemData(ui->dataBitsBox->currentIndex()).toInt());
     serial_settings.stringDataBits = ui->dataBitsBox->currentText();
 
-    serial_settings.parity = static_cast<QSerialPort::Parity>(
-                ui->parityBox->itemData(ui->parityBox->currentIndex()).toInt());
+    serial_settings.parity = static_cast<QSerialPort::Parity>(ui->parityBox->itemData(ui->parityBox->currentIndex()).toInt());
     serial_settings.stringParity = ui->parityBox->currentText();
 
-    serial_settings.stopBits = static_cast<QSerialPort::StopBits>(
-                ui->stopBitsBox->itemData(ui->stopBitsBox->currentIndex()).toInt());
+    serial_settings.stopBits = static_cast<QSerialPort::StopBits>(ui->stopBitsBox->itemData(ui->stopBitsBox->currentIndex()).toInt());
     serial_settings.stringStopBits = ui->stopBitsBox->currentText();
 
-    serial_settings.flowControl = static_cast<QSerialPort::FlowControl>(
-                ui->flowControlBox->itemData(ui->flowControlBox->currentIndex()).toInt());
+    serial_settings.flowControl = static_cast<QSerialPort::FlowControl>(ui->flowControlBox->itemData(ui->flowControlBox->currentIndex()).toInt());
     serial_settings.stringFlowControl = ui->flowControlBox->currentText();
 
+    qDebug() << "serial_settings.name - " << serial_settings.name << endl;
+    qDebug() << "serial_settings.baudRate - " << serial_settings.baudRate << endl;
+    qDebug() << "serial_settings.stringBaudRate - " << serial_settings.stringBaudRate << endl;
+
+    qDebug() << "serial_settings.dataBits - " << serial_settings.dataBits << endl;
+    qDebug() << "serial_settings.stringDataBits - " << serial_settings.stringDataBits << endl;
+
+    qDebug() << "serial_settings.parity - " << serial_settings.parity << endl;
+    qDebug() << "serial_settings.stringParity - " << serial_settings.stringParity << endl;
+
+    qDebug() << "serial_settings.stopBits - " << serial_settings.stopBits << endl;
+    qDebug() << "serial_settings.stringStopBits - " << serial_settings.stringStopBits << endl;
+
+    qDebug() << "serial_settings.flowControl - " << serial_settings.flowControl << endl;
+    qDebug() << "serial_settings.stringFlowControl - " << serial_settings.stringFlowControl << endl;
 
 }
 
@@ -375,7 +402,6 @@ void settings::enablePushButtonSlot(bool val)
             ui->buttonBox->setEnabled(true);
             //closeSerialPort();
             ui->btnCalib->setText("Send the calibration data");
-
         }
     }
 }

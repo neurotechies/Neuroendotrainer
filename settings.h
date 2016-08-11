@@ -43,8 +43,6 @@ public:
         QSerialPort::FlowControl flowControl;
         QString stringFlowControl;
     };
-
-
     explicit settings(QWidget *parent = 0);
     ~settings();
 

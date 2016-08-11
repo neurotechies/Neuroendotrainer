@@ -38,6 +38,7 @@ public:
     void evaluate();
     void abort();
     void processFrame(const myMat &current_frame);
+    bool sendFrame;
 
 signals:
     void finished();
@@ -54,6 +55,7 @@ private:
     VideoCapture capture_usb;
     int size_bin_endo;
     params parameters;
+
 };
 
 class usbCamRecordDisp_consumer : public QObject

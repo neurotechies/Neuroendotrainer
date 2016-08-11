@@ -2,6 +2,7 @@
 
 auxCamRecord_producer::auxCamRecord_producer()
 {
+    sendFrame = false;
 }
 auxCamRecord_producer::~auxCamRecord_producer()
 {
@@ -27,7 +28,7 @@ const string auxCamRecord_producer::currentDateTime()
     int milli = curTime.tv_usec / 1000;
 
     char buffer [80];
-    strftime(buffer, 80, "%Y-%m-%d %H:%M:%S", localtime(&curTime.tv_sec));
+    strftime(buffer, 80, "%H:%M:%S", localtime(&curTime.tv_sec));
 
     char currentTime[84] = "";
     sprintf(currentTime, "%s:%d", buffer, milli);
@@ -141,18 +142,43 @@ void auxCamRecord_producer::abort()
 void auxCamRecord_producer::processFrame(const cv::Mat &current_frame)
 {
     // process the current frame; Entry point for the online evaluation for the auxiliary camera.
-    Mat hsv, threshold, tooltip;
+    Mat hsv, tooltip;
+    vector<vector<Point> > contours;
+    vector<Vec4i> hierarchy;
+    Moments mu;
+    Point2f center;
     // track the position of the tool tip
     if(m_eval)
     {
         cvtColor(current_frame, hsv, CV_BGR2HSV);
-        inRange(hsv, cv::Scalar(50, 130, 100), cv::Scalar(70, 255, 255), threshold);
-        erode(threshold, tooltip, Mat(), Point(-1, -1), 2, 1, 1);
+        inRange(hsv, cv::Scalar(50, 130, 100), cv::Scalar(70, 255, 255), tooltip);
+        erode(tooltip, tooltip, Mat(), Point(-1, -1), 2, 1, 1);
         dilate(tooltip, tooltip, Mat(), Point(-1, -1), 2, 1, 1);
-        // find the contours ; find which is tool ; when confirmed store the location;
-        // update the search window
-        // emit sendtoUI(tooltip);
-        // usleep(10);
+        dilate(tooltip, tooltip, Mat(), Point(-1, -1), 2, 1, 1);
+        erode(tooltip, tooltip, Mat(), Point(-1, -1), 2, 1, 1);
+        //if(sendFrame)
+        //    emit sendtoUI(tooltip);
+        findContours(tooltip, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
+        if(contours.size() > 0)
+        {
+            int Maxsize = contours[0].size();
+            int index = 0;
+            for (int i = 1; i < contours.size(); ++i)
+            {
+                int size = contours[i].size();
+                if (Maxsize < size)
+                {
+                    Maxsize = size;
+                    index = i;
+                }
+            }
+            if(contours[index].size() > TRACKING_BLOB_THRESH)
+            {
+                mu = moments( contours[index], false );
+                //center = Point2f( mu.m10/mu.m00 , mu.m01/mu.m00 );
+                trackingData.push_back(make_pair(currentDateTime(), make_pair(mu.m10/mu.m00, mu.m01/mu.m00)));
+            }
+        }
     }
 }
 
@@ -201,7 +227,8 @@ void auxCamRecord_producer::process()
                     //cout << "conversion complete\n";
                     //std::copy ( temp_rgb.begin(), temp_rgb.begin() + (size_1_rgb), vec_frame_ax_rgb.begin() + ((i) * (size_1_rgb)));
                     vec_frame_ax_rgb[i] = img3u;
-                    emit sendtoUI(img3u);
+                    if(sendFrame)
+                        emit sendtoUI(img3u);
                     usleep(10);
                     processFrame(img3u);
                 }
@@ -272,7 +299,7 @@ void auxCamRecord_producer::process()
             m_hCam = 0;
         }
     }
-
+    emit sendEvalData(trackingData);
     emit finished();
 }
 

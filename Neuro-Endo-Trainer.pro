@@ -10,7 +10,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = Neuro-Endo-Trainer
 TEMPLATE = app
-
+CONFIG += console
+#CONFIG += debug
 
 SOURCES += main.cpp\
         qmainwindow.cpp \
@@ -26,7 +27,8 @@ SOURCES += main.cpp\
     auxCamRecord.cpp \
     params.cpp \
     Scorer.cpp \
-    auxcamgraphicsview.cpp
+    auxcamgraphicsview.cpp \
+    timeClass.cpp
 
 HEADERS  += qmainwindow.h \
     settings_main.h \
@@ -41,7 +43,8 @@ HEADERS  += qmainwindow.h \
     auxCamRecord.h \
     params.h \
     Scorer.h \
-    auxcamgraphicsview.h
+    auxcamgraphicsview.h \
+    timeClass.h
 
 FORMS    += qmainwindow.ui \
     settings_main.ui \

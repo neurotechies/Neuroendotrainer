@@ -32,7 +32,6 @@ settings_main::settings_main(QWidget *parent) :
     x_left_start = -1;
     y_left_start = -1;
     boundingRectangle = QRect(-1, -1, -1, -1);
-
 }
 
 void settings_main::mouseClickOnAuxCam(string &clk, vector<int> &d)

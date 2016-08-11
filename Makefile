@@ -62,7 +62,8 @@ SOURCES       = main.cpp \
 		auxCamRecord.cpp \
 		params.cpp \
 		Scorer.cpp \
-		auxcamgraphicsview.cpp qrc_resources.cpp \
+		auxcamgraphicsview.cpp \
+		timeClass.cpp qrc_resources.cpp \
 		moc_qmainwindow.cpp \
 		moc_settings_main.cpp \
 		moc_settings.cpp \
@@ -88,6 +89,7 @@ OBJECTS       = main.o \
 		params.o \
 		Scorer.o \
 		auxcamgraphicsview.o \
+		timeClass.o \
 		qrc_resources.o \
 		moc_qmainwindow.o \
 		moc_settings_main.o \
@@ -246,7 +248,8 @@ DIST          = ../../Qt5.5.1/5.5/gcc_64/mkspecs/features/spec_pre.prf \
 		auxCamRecord.h \
 		params.h \
 		Scorer.h \
-		auxcamgraphicsview.h main.cpp \
+		auxcamgraphicsview.h \
+		timeClass.h main.cpp \
 		qmainwindow.cpp \
 		settings_main.cpp \
 		settings.cpp \
@@ -260,7 +263,8 @@ DIST          = ../../Qt5.5.1/5.5/gcc_64/mkspecs/features/spec_pre.prf \
 		auxCamRecord.cpp \
 		params.cpp \
 		Scorer.cpp \
-		auxcamgraphicsview.cpp
+		auxcamgraphicsview.cpp \
+		timeClass.cpp
 QMAKE_TARGET  = Neuro-Endo-Trainer
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = Neuro-Endo-Trainer
@@ -595,8 +599,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents resources.qrc $(DISTDIR)/
-	$(COPY_FILE) --parents qmainwindow.h settings_main.h settings.h testBasler.h testIDS.h testUSB.h qtopencvviewergl.h buf_aux.h buf_endo.h usbcamrecorddisp.h auxCamRecord.h params.h Scorer.h auxcamgraphicsview.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp qmainwindow.cpp settings_main.cpp settings.cpp testBasler.cpp testIDS.cpp testUSB.cpp qtopencvviewergl.cpp buf_aux.cpp buf_endo.cpp usbcamrecorddisp.cpp auxCamRecord.cpp params.cpp Scorer.cpp auxcamgraphicsview.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents qmainwindow.h settings_main.h settings.h testBasler.h testIDS.h testUSB.h qtopencvviewergl.h buf_aux.h buf_endo.h usbcamrecorddisp.h auxCamRecord.h params.h Scorer.h auxcamgraphicsview.h timeClass.h $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp qmainwindow.cpp settings_main.cpp settings.cpp testBasler.cpp testIDS.cpp testUSB.cpp qtopencvviewergl.cpp buf_aux.cpp buf_endo.cpp usbcamrecorddisp.cpp auxCamRecord.cpp params.cpp Scorer.cpp auxcamgraphicsview.cpp timeClass.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents qmainwindow.ui settings_main.ui settings.ui $(DISTDIR)/
 
 
@@ -899,6 +903,9 @@ moc_qmainwindow.cpp: ../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/QMainWindow \
 		/usr/local/include/opencv2/contrib/retina.hpp \
 		/usr/local/include/opencv2/contrib/openfabmap.hpp \
 		params.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/QSerialPort \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialport.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialportglobal.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtCore/QTime \
 		auxCamRecord.h \
 		buf_aux.h \
@@ -1078,11 +1085,11 @@ moc_qmainwindow.cpp: ../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/QMainWindow \
 		/opt/pylon3/include/pylon/private/DeviceSpecificImageEventHandlerTie.h \
 		/opt/pylon3/include/pylon/private/DeviceSpecificCameraEventHandlerTie.h \
 		/usr/include/ueye.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/QDebug \
 		../../Qt5.5.1/5.5/gcc_64/include/QtCore/QFileInfo \
 		settings_main.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/QDialog \
 		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/qdialog.h \
-		../../Qt5.5.1/5.5/gcc_64/include/QtCore/QDebug \
 		../../Qt5.5.1/5.5/gcc_64/include/QtCore/QTimer \
 		../../Qt5.5.1/5.5/gcc_64/include/QtMultimedia/QCameraInfo \
 		../../Qt5.5.1/5.5/gcc_64/include/QtMultimedia/qcamerainfo.h \
@@ -1110,9 +1117,10 @@ moc_qmainwindow.cpp: ../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/QMainWindow \
 		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/qactiongroup.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/qaction.h \
 		settings.h \
-		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/QSerialPort \
-		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialport.h \
-		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialportglobal.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/QMessageBox \
+		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/qmessagebox.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/QStringRef \
+		Scorer.h \
 		qmainwindow.h
 	/home/terminalx/Qt5.5.1/5.5/gcc_64/bin/moc $(DEFINES) -I/home/terminalx/Qt5.5.1/5.5/gcc_64/mkspecs/linux-g++ -I/home/terminalx/Dropbox/Neuro-Endo-Trainer -I/opt/pylon3/include -I/opt/pylon3/genicam/library/CPP/include -I/usr/local/include -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtMultimediaWidgets -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtMultimedia -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtOpenGL -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtWidgets -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtGui -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtNetwork -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtSerialPort -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtCore qmainwindow.h -o moc_qmainwindow.cpp
 
@@ -1558,6 +1566,9 @@ moc_settings_main.cpp: ../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/QDialog \
 		/opt/pylon3/include/pylon/private/DeviceSpecificImageEventHandlerTie.h \
 		/opt/pylon3/include/pylon/private/DeviceSpecificCameraEventHandlerTie.h \
 		params.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/QSerialPort \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialport.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialportglobal.h \
 		testIDS.h \
 		/usr/include/ueye.h \
 		testUSB.h \
@@ -1568,9 +1579,9 @@ moc_settings_main.cpp: ../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/QDialog \
 		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/qmainwindow.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/qtabwidget.h \
 		settings.h \
-		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/QSerialPort \
-		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialport.h \
-		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialportglobal.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/QMessageBox \
+		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/qmessagebox.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/QStringRef \
 		settings_main.h
 	/home/terminalx/Qt5.5.1/5.5/gcc_64/bin/moc $(DEFINES) -I/home/terminalx/Qt5.5.1/5.5/gcc_64/mkspecs/linux-g++ -I/home/terminalx/Dropbox/Neuro-Endo-Trainer -I/opt/pylon3/include -I/opt/pylon3/genicam/library/CPP/include -I/usr/local/include -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtMultimediaWidgets -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtMultimedia -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtOpenGL -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtWidgets -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtGui -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtNetwork -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtSerialPort -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtCore settings_main.h -o moc_settings_main.cpp
 
@@ -1682,6 +1693,9 @@ moc_settings.cpp: ../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/QDialog \
 		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/QSerialPort \
 		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialport.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialportglobal.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/QMessageBox \
+		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/qmessagebox.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/QStringRef \
 		settings.h
 	/home/terminalx/Qt5.5.1/5.5/gcc_64/bin/moc $(DEFINES) -I/home/terminalx/Qt5.5.1/5.5/gcc_64/mkspecs/linux-g++ -I/home/terminalx/Dropbox/Neuro-Endo-Trainer -I/opt/pylon3/include -I/opt/pylon3/genicam/library/CPP/include -I/usr/local/include -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtMultimediaWidgets -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtMultimedia -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtOpenGL -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtWidgets -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtGui -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtNetwork -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtSerialPort -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtCore settings.h -o moc_settings.cpp
 
@@ -2088,6 +2102,9 @@ moc_testBasler.cpp: ../../Qt5.5.1/5.5/gcc_64/include/QtCore/QThread \
 		/usr/local/include/opencv2/contrib/retina.hpp \
 		/usr/local/include/opencv2/contrib/openfabmap.hpp \
 		params.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/QSerialPort \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialport.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialportglobal.h \
 		testBasler.h
 	/home/terminalx/Qt5.5.1/5.5/gcc_64/bin/moc $(DEFINES) -I/home/terminalx/Qt5.5.1/5.5/gcc_64/mkspecs/linux-g++ -I/home/terminalx/Dropbox/Neuro-Endo-Trainer -I/opt/pylon3/include -I/opt/pylon3/genicam/library/CPP/include -I/usr/local/include -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtMultimediaWidgets -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtMultimedia -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtOpenGL -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtWidgets -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtGui -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtNetwork -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtSerialPort -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtCore testBasler.h -o moc_testBasler.cpp
 
@@ -2320,6 +2337,9 @@ moc_testIDS.cpp: ../../Qt5.5.1/5.5/gcc_64/include/QtCore/QThread \
 		/usr/local/include/opencv2/contrib/openfabmap.hpp \
 		/usr/include/ueye.h \
 		params.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/QSerialPort \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialport.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialportglobal.h \
 		testIDS.h
 	/home/terminalx/Qt5.5.1/5.5/gcc_64/bin/moc $(DEFINES) -I/home/terminalx/Qt5.5.1/5.5/gcc_64/mkspecs/linux-g++ -I/home/terminalx/Dropbox/Neuro-Endo-Trainer -I/opt/pylon3/include -I/opt/pylon3/genicam/library/CPP/include -I/usr/local/include -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtMultimediaWidgets -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtMultimedia -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtOpenGL -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtWidgets -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtGui -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtNetwork -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtSerialPort -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtCore testIDS.h -o moc_testIDS.cpp
 
@@ -2584,6 +2604,9 @@ moc_testUSB.cpp: ../../Qt5.5.1/5.5/gcc_64/include/QtCore/QThread \
 		../../Qt5.5.1/5.5/gcc_64/include/QtGui/qtouchdevice.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtGui/qicon.h \
 		params.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/QSerialPort \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialport.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialportglobal.h \
 		testUSB.h
 	/home/terminalx/Qt5.5.1/5.5/gcc_64/bin/moc $(DEFINES) -I/home/terminalx/Qt5.5.1/5.5/gcc_64/mkspecs/linux-g++ -I/home/terminalx/Dropbox/Neuro-Endo-Trainer -I/opt/pylon3/include -I/opt/pylon3/genicam/library/CPP/include -I/usr/local/include -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtMultimediaWidgets -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtMultimedia -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtOpenGL -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtWidgets -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtGui -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtNetwork -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtSerialPort -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtCore testUSB.h -o moc_testUSB.cpp
 
@@ -2940,6 +2963,9 @@ moc_usbcamrecorddisp.cpp: ../../Qt5.5.1/5.5/gcc_64/include/QtCore/QThread \
 		/usr/local/include/opencv2/contrib/retina.hpp \
 		/usr/local/include/opencv2/contrib/openfabmap.hpp \
 		params.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/QSerialPort \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialport.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialportglobal.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtCore/QTime \
 		usbcamrecorddisp.h
 	/home/terminalx/Qt5.5.1/5.5/gcc_64/bin/moc $(DEFINES) -I/home/terminalx/Qt5.5.1/5.5/gcc_64/mkspecs/linux-g++ -I/home/terminalx/Dropbox/Neuro-Endo-Trainer -I/opt/pylon3/include -I/opt/pylon3/genicam/library/CPP/include -I/usr/local/include -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtMultimediaWidgets -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtMultimedia -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtOpenGL -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtWidgets -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtGui -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtNetwork -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtSerialPort -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtCore usbcamrecorddisp.h -o moc_usbcamrecorddisp.cpp
@@ -3172,6 +3198,9 @@ moc_auxCamRecord.cpp: ../../Qt5.5.1/5.5/gcc_64/include/QtCore/QThread \
 		/usr/local/include/opencv2/contrib/retina.hpp \
 		/usr/local/include/opencv2/contrib/openfabmap.hpp \
 		params.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/QSerialPort \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialport.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialportglobal.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtCore/QTime \
 		/opt/pylon3/include/pylon/PylonIncludes.h \
 		/opt/pylon3/include/pylon/Platform.h \
@@ -3349,6 +3378,7 @@ moc_auxCamRecord.cpp: ../../Qt5.5.1/5.5/gcc_64/include/QtCore/QThread \
 		/opt/pylon3/include/pylon/private/DeviceSpecificImageEventHandlerTie.h \
 		/opt/pylon3/include/pylon/private/DeviceSpecificCameraEventHandlerTie.h \
 		/usr/include/ueye.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/QDebug \
 		auxCamRecord.h
 	/home/terminalx/Qt5.5.1/5.5/gcc_64/bin/moc $(DEFINES) -I/home/terminalx/Qt5.5.1/5.5/gcc_64/mkspecs/linux-g++ -I/home/terminalx/Dropbox/Neuro-Endo-Trainer -I/opt/pylon3/include -I/opt/pylon3/genicam/library/CPP/include -I/usr/local/include -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtMultimediaWidgets -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtMultimedia -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtOpenGL -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtWidgets -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtGui -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtNetwork -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtSerialPort -I/home/terminalx/Qt5.5.1/5.5/gcc_64/include/QtCore auxCamRecord.h -o moc_auxCamRecord.cpp
 
@@ -3992,6 +4022,9 @@ main.o: main.cpp ../../Qt5.5.1/5.5/gcc_64/include/QtGui/QPixmap \
 		/usr/local/include/opencv2/contrib/retina.hpp \
 		/usr/local/include/opencv2/contrib/openfabmap.hpp \
 		params.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/QSerialPort \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialport.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialportglobal.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtCore/QTime \
 		auxCamRecord.h \
 		buf_aux.h \
@@ -4171,11 +4204,11 @@ main.o: main.cpp ../../Qt5.5.1/5.5/gcc_64/include/QtGui/QPixmap \
 		/opt/pylon3/include/pylon/private/DeviceSpecificImageEventHandlerTie.h \
 		/opt/pylon3/include/pylon/private/DeviceSpecificCameraEventHandlerTie.h \
 		/usr/include/ueye.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/QDebug \
 		../../Qt5.5.1/5.5/gcc_64/include/QtCore/QFileInfo \
 		settings_main.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/QDialog \
 		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/qdialog.h \
-		../../Qt5.5.1/5.5/gcc_64/include/QtCore/QDebug \
 		../../Qt5.5.1/5.5/gcc_64/include/QtCore/QTimer \
 		../../Qt5.5.1/5.5/gcc_64/include/QtMultimedia/QCameraInfo \
 		../../Qt5.5.1/5.5/gcc_64/include/QtMultimedia/qcamerainfo.h \
@@ -4203,9 +4236,10 @@ main.o: main.cpp ../../Qt5.5.1/5.5/gcc_64/include/QtGui/QPixmap \
 		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/qactiongroup.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/qaction.h \
 		settings.h \
-		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/QSerialPort \
-		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialport.h \
-		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialportglobal.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/QMessageBox \
+		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/qmessagebox.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/QStringRef \
+		Scorer.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/QApplication \
 		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/qapplication.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/qdesktopwidget.h \
@@ -4401,7 +4435,10 @@ qmainwindow.o: qmainwindow.cpp ../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/qmainw
 		../../Qt5.5.1/5.5/gcc_64/include/QtMultimedia/qcameraimageprocessing.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtMultimedia/qcameraviewfindersettings.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtMultimedia/qvideoframe.h \
-		../../Qt5.5.1/5.5/gcc_64/include/QtMultimedia/qabstractvideobuffer.h
+		../../Qt5.5.1/5.5/gcc_64/include/QtMultimedia/qabstractvideobuffer.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/QSerialPortInfo \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialportinfo.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialportglobal.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qmainwindow.o qmainwindow.cpp
 
 settings_main.o: settings_main.cpp settings_main.h \
@@ -4847,6 +4884,9 @@ settings_main.o: settings_main.cpp settings_main.h \
 		/opt/pylon3/include/pylon/private/DeviceSpecificImageEventHandlerTie.h \
 		/opt/pylon3/include/pylon/private/DeviceSpecificCameraEventHandlerTie.h \
 		params.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/QSerialPort \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialport.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialportglobal.h \
 		testIDS.h \
 		/usr/include/ueye.h \
 		testUSB.h \
@@ -4857,9 +4897,9 @@ settings_main.o: settings_main.cpp settings_main.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/qmainwindow.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/qtabwidget.h \
 		settings.h \
-		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/QSerialPort \
-		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialport.h \
-		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialportglobal.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/QMessageBox \
+		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/qmessagebox.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/QStringRef \
 		ui_settings_main.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtCore/QVariant \
 		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/QAction \
@@ -4923,8 +4963,6 @@ settings_main.o: settings_main.cpp settings_main.h \
 		auxcamgraphicsview.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/QGraphicsSceneMouseEvent \
 		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/qgraphicssceneevent.h \
-		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/QMessageBox \
-		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/qmessagebox.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtGui/QMouseEvent
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o settings_main.o settings_main.cpp
 
@@ -5037,6 +5075,9 @@ settings.o: settings.cpp settings.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/QSerialPort \
 		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialport.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialportglobal.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/QMessageBox \
+		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/qmessagebox.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/QStringRef \
 		ui_settings.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtCore/QVariant \
 		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/QAction \
@@ -5094,7 +5135,9 @@ settings.o: settings.cpp settings.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/qabstractbutton.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/QStackedWidget \
 		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/qstackedwidget.h \
-		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/QWidget
+		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/QWidget \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/QSerialPortInfo \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialportinfo.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o settings.o settings.cpp
 
 testBasler.o: testBasler.cpp testBasler.h \
@@ -5500,7 +5543,10 @@ testBasler.o: testBasler.cpp testBasler.h \
 		/usr/local/include/opencv2/contrib/contrib.hpp \
 		/usr/local/include/opencv2/contrib/retina.hpp \
 		/usr/local/include/opencv2/contrib/openfabmap.hpp \
-		params.h
+		params.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/QSerialPort \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialport.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialportglobal.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o testBasler.o testBasler.cpp
 
 testIDS.o: testIDS.cpp testIDS.h \
@@ -5732,7 +5778,10 @@ testIDS.o: testIDS.cpp testIDS.h \
 		/usr/local/include/opencv2/contrib/retina.hpp \
 		/usr/local/include/opencv2/contrib/openfabmap.hpp \
 		/usr/include/ueye.h \
-		params.h
+		params.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/QSerialPort \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialport.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialportglobal.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o testIDS.o testIDS.cpp
 
 testUSB.o: testUSB.cpp testUSB.h \
@@ -5996,7 +6045,10 @@ testUSB.o: testUSB.cpp testUSB.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtGui/qvector2d.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtGui/qtouchdevice.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtGui/qicon.h \
-		params.h
+		params.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/QSerialPort \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialport.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialportglobal.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o testUSB.o testUSB.cpp
 
 qtopencvviewergl.o: qtopencvviewergl.cpp qtopencvviewergl.h \
@@ -6341,7 +6393,10 @@ buf_aux.o: buf_aux.cpp buf_aux.h \
 		/usr/local/include/opencv2/contrib/contrib.hpp \
 		/usr/local/include/opencv2/contrib/retina.hpp \
 		/usr/local/include/opencv2/contrib/openfabmap.hpp \
-		params.h
+		params.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/QSerialPort \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialport.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialportglobal.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o buf_aux.o buf_aux.cpp
 
 buf_endo.o: buf_endo.cpp buf_endo.h \
@@ -6559,7 +6614,10 @@ buf_endo.o: buf_endo.cpp buf_endo.h \
 		/usr/local/include/opencv2/contrib/contrib.hpp \
 		/usr/local/include/opencv2/contrib/retina.hpp \
 		/usr/local/include/opencv2/contrib/openfabmap.hpp \
-		params.h
+		params.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/QSerialPort \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialport.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialportglobal.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o buf_endo.o buf_endo.cpp
 
 usbcamrecorddisp.o: usbcamrecorddisp.cpp usbcamrecorddisp.h \
@@ -6791,6 +6849,9 @@ usbcamrecorddisp.o: usbcamrecorddisp.cpp usbcamrecorddisp.h \
 		/usr/local/include/opencv2/contrib/retina.hpp \
 		/usr/local/include/opencv2/contrib/openfabmap.hpp \
 		params.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/QSerialPort \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialport.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialportglobal.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtCore/QTime
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o usbcamrecorddisp.o usbcamrecorddisp.cpp
 
@@ -7023,6 +7084,9 @@ auxCamRecord.o: auxCamRecord.cpp auxCamRecord.h \
 		/usr/local/include/opencv2/contrib/retina.hpp \
 		/usr/local/include/opencv2/contrib/openfabmap.hpp \
 		params.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/QSerialPort \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialport.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialportglobal.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtCore/QTime \
 		/opt/pylon3/include/pylon/PylonIncludes.h \
 		/opt/pylon3/include/pylon/Platform.h \
@@ -7199,10 +7263,67 @@ auxCamRecord.o: auxCamRecord.cpp auxCamRecord.h \
 		/opt/pylon3/include/pylon/private/DeviceSpecificConfigurationEventHandlerTie.h \
 		/opt/pylon3/include/pylon/private/DeviceSpecificImageEventHandlerTie.h \
 		/opt/pylon3/include/pylon/private/DeviceSpecificCameraEventHandlerTie.h \
-		/usr/include/ueye.h
+		/usr/include/ueye.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o auxCamRecord.o auxCamRecord.cpp
 
-params.o: params.cpp params.h
+params.o: params.cpp params.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/QSerialPort \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialport.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qiodevice.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qglobal.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qconfig.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qfeatures.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qsystemdetection.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qprocessordetection.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qcompilerdetection.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qtypeinfo.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qtypetraits.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qsysinfo.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qlogging.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qflags.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qatomic.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qbasicatomic.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qgenericatomic.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qatomic_cxx11.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qatomic_gcc.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qatomic_msvc.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qatomic_armv7.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qatomic_armv6.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qatomic_armv5.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qatomic_ia64.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qatomic_mips.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qatomic_x86.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qatomic_unix.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qglobalstatic.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qmutex.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qnumeric.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qobject.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qobjectdefs.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qnamespace.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qstring.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qchar.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qbytearray.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qrefcount.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qarraydata.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qstringbuilder.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qlist.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qalgorithms.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qiterator.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qbytearraylist.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qstringlist.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qregexp.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qstringmatcher.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qcoreevent.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qscopedpointer.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qmetatype.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qvarlengtharray.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qcontainerfwd.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qisenum.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtCore/qobject_impl.h \
+		../../Qt5.5.1/5.5/gcc_64/include/QtSerialPort/qserialportglobal.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o params.o params.cpp
 
 Scorer.o: Scorer.cpp Scorer.h
@@ -7330,6 +7451,9 @@ auxcamgraphicsview.o: auxcamgraphicsview.cpp auxcamgraphicsview.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtWidgets/qdialog.h \
 		../../Qt5.5.1/5.5/gcc_64/include/QtGui/QMouseEvent
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o auxcamgraphicsview.o auxcamgraphicsview.cpp
+
+timeClass.o: timeClass.cpp timeClass.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o timeClass.o timeClass.cpp
 
 qrc_resources.o: qrc_resources.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_resources.o qrc_resources.cpp

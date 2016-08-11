@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <QtSerialPort/QSerialPort>
 using namespace std;
 
 class params
@@ -35,6 +36,18 @@ public:
     {
         cap_paths.clear();
         cap_paths.push_back("/home/terminalx/Desktop/");
+        // serial port settings
+        serial_name =  "ttyUSB0";
+        serial_baudRate =  static_cast<QSerialPort::BaudRate>(115200);
+        serial_stringBaudRate = "115200";
+        serial_dataBits = static_cast<QSerialPort::DataBits>(8);
+        serial_stringDataBits = "8";
+        serial_parity = static_cast<QSerialPort::Parity>(0);
+        serial_stringParity = "None";
+        serial_stopBits = static_cast<QSerialPort::StopBits>(1);
+        serial_stringStopBits = "1";
+        serial_flowControl = static_cast<QSerialPort::FlowControl>(0);
+        serial_stringFlowControl = "None";
     }
 
 // capture parameters
@@ -54,6 +67,23 @@ public:
 
 // endo trainer device settings
     int dev_plateAngle;
+// endo trainer serial port settings
+    QString serial_name;
+
+    qint32 serial_baudRate;
+    QString serial_stringBaudRate;
+
+    QSerialPort::DataBits serial_dataBits;
+    QString serial_stringDataBits;
+
+    QSerialPort::Parity serial_parity;
+    QString serial_stringParity;
+
+    QSerialPort::StopBits serial_stopBits;
+    QString serial_stringStopBits;
+
+    QSerialPort::FlowControl serial_flowControl;
+    QString serial_stringFlowControl;
 
 };
 
